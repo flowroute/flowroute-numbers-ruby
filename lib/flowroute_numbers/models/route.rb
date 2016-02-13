@@ -7,8 +7,8 @@ module FlowrouteNumbers
     # @return [String]
     attr_accessor :name
 
-    def initialize
-    @name = "sip-reg"
+    def initialize(name="sip-reg")
+    @name = name
     end
     
     def method_missing (method_name)

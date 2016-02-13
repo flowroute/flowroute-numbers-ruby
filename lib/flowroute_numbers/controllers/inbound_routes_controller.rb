@@ -72,11 +72,13 @@ module FlowrouteNumbers
         "content-type" => "application/json; charset=utf-8"
       }
 
-      # append custom auth authorization
-      CustomAuthUtility.append_custom_auth_params headers
-
-      # invoke the API call request to fetch the response
-      response = Unirest.put query_url, headers:headers, parameters:type.to_json
+      typejson = type.to_json
+      valuejson = value.to_json
+      bodyjson = "{\"type\": #{typejson}, \"value\": #{valuejson}}"
+      response = CustomAuthUtility.append_custom_auth_params method:'PUT',
+                                                             query_url:query_url,
+                                                             body:bodyjson,
+                                                             headers:headers
 
       # Error handling using HTTP status codes
       if response.code == 401

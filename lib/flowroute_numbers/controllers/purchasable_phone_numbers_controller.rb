@@ -31,11 +31,9 @@ module FlowrouteNumbers
         "accept" => "application/json"
       }
 
-      # append custom auth authorization
-      CustomAuthUtility.append_custom_auth_params headers
-
-      # invoke the API call request to fetch the response
-      response = Unirest.get query_url, headers:headers
+      response = CustomAuthUtility.append_custom_auth_params method:'GET',
+                                                             query_url:query_url,
+                                                             headers:headers
 
       # Error handling using HTTP status codes
       if response.code == 401
@@ -50,9 +48,9 @@ module FlowrouteNumbers
     end
 
     # Retrieves a list of all NPAs (area codes) that contain purchasable telephone numbers.
-    # @param [Numeric] limit Required parameter: Number of items to display (Max 200).
+    # @param [Numeric] limit Optional parameter: Number of items to display (Max 200).
     # @return mixed response from the API call
-    def list_available_np_as limit
+    def list_available_np_as limit:nil
       # the base uri for api requests
       query_builder = Configuration.BASE_URI.dup
 
@@ -73,11 +71,9 @@ module FlowrouteNumbers
         "accept" => "application/json"
       }
 
-      # append custom auth authorization
-      CustomAuthUtility.append_custom_auth_params headers
-
-      # invoke the API call request to fetch the response
-      response = Unirest.get query_url, headers:headers
+      response = CustomAuthUtility.append_custom_auth_params method:'GET',
+                                                             query_url:query_url,
+                                                             headers:headers
 
       # Error handling using HTTP status codes
       if response.code == 401
@@ -127,11 +123,9 @@ module FlowrouteNumbers
         "accept" => "application/json"
       }
 
-      # append custom auth authorization
-      CustomAuthUtility.append_custom_auth_params headers
-
-      # invoke the API call request to fetch the response
-      response = Unirest.get query_url, headers:headers
+      response = CustomAuthUtility.append_custom_auth_params method:'GET',
+                                                             query_url:query_url,
+                                                             headers:headers
 
       # Error handling using HTTP status codes
       if response.code == 401

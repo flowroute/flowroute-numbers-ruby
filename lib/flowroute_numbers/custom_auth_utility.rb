@@ -20,32 +20,41 @@ module FlowrouteNumbers
       end
 
       parsed_url = URI(query_url)
-      hash_qp = CGI::parse(parsed_url.query)
-      ordered_qp = URI.encode_www_form(Hash[hash_qp.sort])
+      if parsed_url.query
+        hash_qp = CGI::parse(parsed_url.query)
+        ordered_qp = URI.encode_www_form(Hash[hash_qp.sort])
+      else
+        ordered_qp = ''
+      end
       canonical_uri = "#{parsed_url.scheme}://#{parsed_url.host}#{parsed_url.path}\n#{ordered_qp}"
+      if ordered_qp.nil? || ordered_qp.empty?
+        canonical_url = "#{parsed_url.scheme}://#{parsed_url.host}#{parsed_url.path}"
+      else
+        canonical_url = "#{parsed_url.scheme}://#{parsed_url.host}#{parsed_url.path}?#{ordered_qp}"
+      end
       message_string = "#{timestamp}\n#{method}\n#{body_md5}\n#{canonical_uri}"
       signature = OpenSSL::HMAC.hexdigest('sha1', Configuration.password.dup, message_string)
       if method == 'GET'
-        response = Unirest.get query_url,
+        response = Unirest.get canonical_url,
                                headers:headers, 
                                auth:{:user=>Configuration.username.dup, :password=>signature}
       elsif method == 'POST'
-        response = Unirest.post query_url, 
+        response = Unirest.post canonical_url, 
                                 headers:headers, 
                                 parameters:body, 
                                 auth:{:user=>Configuration.username.dup, :password=>signature}
       elsif method == 'PUT'
-        response = Unirest.put query_url, 
+        response = Unirest.put canonical_url, 
                                headers:headers, 
                                parameters:body, 
                                auth:{:user=>Configuration.username.dup, :password=>signature}
       elsif method == 'PATCH'
-        response = Unirest.patch query_url, 
+        response = Unirest.patch canonical_url, 
                                  headers:headers, 
                                  parameters:body, 
                                  auth:{:user=>Configuration.username.dup, :password=>signature}
       elsif method == 'DELETE'
-        response = Unirest.delete query_url, 
+        response = Unirest.delete canonical_url, 
                                   headers:headers, 
                                   parameters:body, 
                                   auth:{:user=>Configuration.username.dup, :password=>signature}
