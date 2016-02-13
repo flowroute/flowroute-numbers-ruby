@@ -17,18 +17,39 @@ module FlowrouteNumbers
       body_md5 = ""
       if body
         body_md5 = Digest::MD5.hexdigest(body)
+      end
 
       parsed_url = URI(query_url)
       hash_qp = CGI::parse(parsed_url.query)
-      ordered_qp = URI.encode_www_form(Hash[pqp.sort])
+      ordered_qp = URI.encode_www_form(Hash[hash_qp.sort])
       canonical_uri = "#{parsed_url.scheme}://#{parsed_url.host}#{parsed_url.path}\n#{ordered_qp}"
-      tokens = (timestamp, method, body_md5, canonical_uri)
       message_string = "#{timestamp}\n#{method}\n#{body_md5}\n#{canonical_uri}"
-      #signature = hmac.new(Configuration.password, message_string, 
-      #  digestmod = hashlib.sha1).hexdigest()
       signature = OpenSSL::HMAC.hexdigest('sha1', Configuration.password.dup, message_string)
-      if method == 'GET':
-        response = Unirest.get query_url, headers:headers, auth:{:user=>Configuration.username.dup, :password=>signature}
+      if method == 'GET'
+        response = Unirest.get query_url,
+                               headers:headers, 
+                               auth:{:user=>Configuration.username.dup, :password=>signature}
+      elsif method == 'POST'
+        response = Unirest.post query_url, 
+                                headers:headers, 
+                                parameters:body, 
+                                auth:{:user=>Configuration.username.dup, :password=>signature}
+      elsif method == 'PUT'
+        response = Unirest.put query_url, 
+                               headers:headers, 
+                               parameters:body, 
+                               auth:{:user=>Configuration.username.dup, :password=>signature}
+      elsif method == 'PATCH'
+        response = Unirest.patch query_url, 
+                                 headers:headers, 
+                                 parameters:body, 
+                                 auth:{:user=>Configuration.username.dup, :password=>signature}
+      elsif method == 'DELETE'
+        response = Unirest.delete query_url, 
+                                  headers:headers, 
+                                  parameters:body, 
+                                  auth:{:user=>Configuration.username.dup, :password=>signature}
+      end
       response
 
     end

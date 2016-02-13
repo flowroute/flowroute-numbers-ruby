@@ -30,7 +30,9 @@ module FlowrouteNumbers
       }
 
       # pass off to custom auth module
-      response = CustomAuthUtility.append_custom_auth_params headers
+      response = CustomAuthUtility.append_custom_auth_params method:'GET',
+                                                             query_url:query_url,
+                                                             headers:headers
 
       # Error handling using HTTP status codes
       if response.code == 401
