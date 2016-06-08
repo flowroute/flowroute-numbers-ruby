@@ -49,13 +49,11 @@ The SDK uses the UniRest Ruby library, which must be installed before you can us
 
 ## Import the SDK and set up your API credentials
 
-The following shows how to import the SDK and setup your API credentials.
-
 Importing the SDK requires that you run commands either by creating and running a script or through the shell. The following instructions describe importing the SDK and running the `messages_controller` by creating and running a script.
 
 1.	Using a code text editor — for example, *Sublime Text* — create a new file.
 
-2.	Add a line pointing to the library installation at the top of the file:
+2.	At the top of the file, first add a line pointing to the library installation:
 
 		require /users/<user>/<directory path>/flowroute-numbers-ruby/lib/flowroute_numbers/
 		
@@ -107,7 +105,7 @@ The following shows an example of a single Ruby file that instantiates all Contr
 	puts response
 
 
-You can approach the adding the Controllers and methods using any of the following methods:
+You can create your own Ruby file by any of the following methods:
  
  1.	Create a single file that contains all of the Controllers and methods, then commenting (#) out the lines for each Controller and method you don't want to run.
  
@@ -115,7 +113,7 @@ You can approach the adding the Controllers and methods using any of the followi
  
  3.	Create a unique file for each method. Each file will then contain the lines instantiating the relevant Controller.
 
-This SDK covers option number 2, creating unique Ruby files. However, regardless of which option you select, the file(s) should be saved in the **flowroute-numbers-ruby** directory. When you want to run a method, run the following on the command line in the **flowroute-numbers-ruby** directory:
+This SDK describes the second option, creating unique Ruby files. However, regardless of which option you select, the file(s) should be saved in the **flowroute-numbers-ruby** directory. When you want to run a method, run the following on the command line in the **flowroute-numbers-ruby** directory:
 
 		ruby <Controller File Name.rb>
 
@@ -566,7 +564,7 @@ The list method is used to return all of the existing inbound routes from your F
 
 Add the following InboundRoutesController methods between `irc = FlowrouteNumbers::InboundRoutesController.new()` and `puts response`
  
-		response = irc.list(limit:nil, page:nil)
+		response = irc.list(limit:nil, page:nil);
 
 The method takes the following parameters:
 
@@ -579,7 +577,7 @@ The method takes the following parameters:
 
 In the following example, a limit of `10` routes is to be returned, and only page `1` displayed:
 
-	response = irc.list(limit:10, page:1)
+	response = irc.list(limit:10, page:1);
 	
 #####Example response
 Based on the parameters passed in the request, the following is returned:
