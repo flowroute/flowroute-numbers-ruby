@@ -9,7 +9,7 @@
 * Update the primary and failover route on a phone number
 
 ### Documentation 
-The full documentation for the v2 Flowroute API is available [here](https://developer.flowroute.com/v2.0/docs).
+The full documentation for the v1 Flowroute API is available [here](https://developer.flowroute.com/v1.0/docs).
 
 ##Before you begin
 
@@ -47,27 +47,29 @@ The SDK uses the UniRest Ruby library, which must be installed before you can us
 
 6.	Import the SDK.
 
-## How To Get Setup
+## Import the SDK and set up your API credentials
 
 The following shows how to import the SDK and setup your API credentials.
 
 Importing the SDK requires that you run commands either by creating and running a script or through the shell. The following instructions describe importing the SDK and running the `messages_controller` by creating and running a script.
 
->**Note:** The following steps describe creating a new Ruby script. However, a demo script, **demo_send.rb**, was installed when the the libraries installed. This file contains the required lines that only need to be modified with your credentials and details for the message to send. If you want to use this script, modify the fields as described below, then run the script from the command line.  
-
 1.	Using a code text editor — for example, *Sublime Text* — create a new file.
 
-2.	Add the following line to the top of the file:
+2.	Add a line pointing to the library installation at the top of the file:
 
 		require /users/<user>/<directory path>/flowroute-numbers-ruby/lib/flowroute_numbers/
 		
-	This line points to the location of the flowroute-numbers-ruby installation.
+	where:
 	
-3.	Add the line requiring rubygems and json.
+	*	`<user>` is the user name of the user in whose directory the library is installed.
+	
+	* 	`<directory path>` points to the location of the **flowroute_numbers** subdirectory of the **flowroute-numbers-ruby** installation.
+	
+3.	Add a line for RubyGems:
 	
 		require 'rubygems'
 		
-3.	Next, add the lines to pass your credentials to the Controllers:
+3.	Next, add lines which pass your credentials to the Controllers:
 
 		FlowrouteNumbers::Configuration.username = 'AccessKey'
 		FlowrouteNumbers::Configuration.password = 'SecretKey'   
@@ -76,7 +78,7 @@ Importing the SDK requires that you run commands either by creating and running 
 
 	>**Note:** You can hard code these values in **Configuration.rb**. However, if you do this you will need to rebuild the gem and install it.
 
-5.	Add the following lines to instantiate your Controllers for later use:
+5.	Add the following lines to instantiate the three Controllers for later use:
 
 		pnc = FlowrouteNumbers::PurchasablePhoneNumbersController.new()
 		tnc = FlowrouteNumbers::TelephoneNumbersController.new()
@@ -84,15 +86,15 @@ Importing the SDK requires that you run commands either by creating and running 
 	
 	>**Note:** The Controllers use variable names. If you do not want to assign variable names to the Controllers and pass your credentials to each controller, you can hard code the credentials in **Configuration.rb** and then call each controller by its full name. This SDK does not cover those steps.
 
-6.	Optionally, add a line to print out a method response:
+6.	Optionally, add a line that prints out a response when parameters are passed to a method:
 
 		puts response
 
 	>**Note:** `response` is a variable name that can be of your own choosing and can be of unlimited characters. However, the name you choose should be used consistently when you use a Controller and method. For these SDK examples, `response` is used. 
 
-The following shows an example of a file that instantiates all Controllers:
+The following shows an example of a single Ruby file that instantiates all Controllers:
 
-	require '/users/jdoe/sdks/flowroute-numbers-ruby/lib/flowroute_numbers/'
+	require '/Users/jdoe/Documents/SDKs/flowroute-numbers-ruby/lib/flowroute_numbers/'
 	require 'rubygems'
 	
 	FlowrouteNumbers::Configuration.username = 'AccessKey'
@@ -105,15 +107,15 @@ The following shows an example of a file that instantiates all Controllers:
 	puts response
 
 
-You can approach the adding the Controllers and methods through any of the following methods:
+You can approach the adding the Controllers and methods using any of the following methods:
  
- 1.	Create a single file that contains all of the Controllers and methods, then commenting out the lines for each method you don't want to run.
+ 1.	Create a single file that contains all of the Controllers and methods, then commenting (#) out the lines for each Controller and method you don't want to run.
  
- 2.	Create a unique file for each Controller, adding only those lines relevant to that Controller and related methods, and then commenting out the lines for each method you're not using. You would create three unique Controller files.
+ 2.	Create a unique file for each Controller, adding only those lines relevant to that Controller and related methods, and then commenting out the lines for each method you're not using. This procedure creates three unique Ruby files.
  
  3.	Create a unique file for each method. Each file will then contain the lines instantiating the relevant Controller.
 
-This SDK covers option number 2, creating unique Controller files. However, regardless of which option you select, the file(s) should be saved in the **flowroute-numbers-ruby** directory. When you want to run a method, run the following on the command line in the **flowroute-numbers-ruby** directory:
+This SDK covers option number 2, creating unique Ruby files. However, regardless of which option you select, the file(s) should be saved in the **flowroute-numbers-ruby** directory. When you want to run a method, run the following on the command line in the **flowroute-numbers-ruby** directory:
 
 		ruby <Controller File Name.rb>
 
@@ -127,15 +129,13 @@ This following sections describe **flowroute-numbers-ruby** Controllers:
 
 *	[`InboundRoutesController`](#inboundco) 
 
-When passing a method, and the method has additional parameters, you are not required to pass the parameter name in the method. For example, the `listAreaAndExchange ($limit=null,$npa=null,$page=null);` method can be formatted as `listAreaAndExchange (10,206,3);` where the `limit` is `10`, the `npa` is `206`, and the page to return is `3`.
-
 >**Important:** The SDK displays sample responses. Formatting of the responses is provided for clarity only. They are not intended to show the formatting of your own response. 
 
 ### PurchasablePhoneNumbersController<a name=purchaseno></a>
 
 The Purchasable Phone Numbers Controller contains all of the methods necessary to search through Flowroute's phone number inventory. Methods must be added to a Ruby file and that file run from the **flowroute-numbers-ruby** directory in a terminal window. For example, you can create a **purchase.rb** file contains the following information:
 
-	require '/users/jdoe/sdks/flowroute-numbers-ruby/lib/flowroute_numbers/'
+	require '/Users/jdoe/Documents/SDKs/flowroute-numbers-ruby/lib/flowroute_numbers/'
 	require 'rubygems'
 	
 	FlowrouteNumbers::Configuration.username = 'AccessKey'
@@ -153,10 +153,9 @@ You can then add any of the following Controller methods after the line above:
 
 * 	[`search()`](#searchno)
 
-
 #### `list_available_np_as(limit)`<a name=listnpa></a>
 
-The list_available\_np\_as method allows you to retrieve a list of every NPA (area code) available in Flowroute's phone number inventory.
+The list_available_np_as method allows you to retrieve a list of every NPA (area code) available in Flowroute's phone number inventory.
 
 #####Usage
 
@@ -168,7 +167,7 @@ Add the following line to your Ruby file between `pnc = FlowrouteNumbers::Purcha
 
 | Parameter | Required |Type |Description                           |
 |-----------|----------|-----|--------------------------------|
-| `limit:nil`     | False  |integer| Defines controls the number of items returned. The maximum number of items is 200. If no number is passed, `nil` is used by default, and a maximum of ten NPAs are returned. |
+| `limit`     | False  |integer| Defines controls the number of items returned. The maximum number of items is 200. If no number is passed, `nil` is used by default, and a maximum of ten NPAs are returned. |
 
 ##### Example usage
 	
@@ -199,7 +198,7 @@ Based on the request above, `put response` returns the following three NPAs.
 	}
 #### `list_area_and_exchange (limit, npa, page)`<a name=listnpanxx></a>
 
-The `listAreaAndExchange` method allows you to retrieve a list of every NPA NXX (area code and exchange) combination available in Flowroute's phone number inventory.
+The `listAreaAndExchange` method allows you to retrieve a list of every NPANXX (area code and exchange) combination available in Flowroute's phone number inventory.
 
 #####Usage
 
@@ -213,7 +212,7 @@ The method takes the following parameters:
 
 | Parameter | Required |Type| Description                                                         |
 |-----------|----------|--------------|-------------------------------------------------|
-| `limit`     | False    | integer| Controls the number of items returned. The maximum number of items is 200. If neither a number nor `nil` are passed, a default of ten NPA-NXX combinations are returned.                 |
+| `limit`     | False    | integer| Controls the number of items returned. The maximum number of items is 200. If neither a number nor `nil` are passed, a default of ten NPANXX combinations are returned.                 |
 | `npa`       | False  | integer| Three-digit area code. Limits results to the specified NPA. If `null` is passed, all NPAs are returned. Partial number search is also supported. For example, passing `20` returns all NPA and NXX results that include `20`.|
 | `page`      | False  |integer  | Sets which page of the results is returned.` Next` and `Prev` URLs provided at the bottom of the response provide navigation pointers. The `page` value overrides the value set for the `limit`. For example, if `nil` is set for both parameters, all pages are returned instead of just `10`.   |
 
@@ -224,7 +223,7 @@ In the following, a request is made to limit the results to `2`, the NPA to `203
 	response = pnc.list_area_and_exchange(limit:2, npa:203, page:3)
 
 #####Example response
-Based on the example usage above, the following two NPA NXX combinations are returned on page `2`, organized by `npanxxs`. 
+Based on the example usage above, the following two NPANXX combinations are returned on page `2`, organized by `npanxxs`. 
 
 ```sh
 {
@@ -251,7 +250,7 @@ Based on the example usage above, the following two NPA NXX combinations are ret
 	
 #### `search limit: (nil, npa, nxx, page, ratecenter, state, tn)`<a name=searchno></a>
 
-The search method is the most robust option for searching through Flowroute's purchasable phone number inventory. It allows you to search by NPA, NXX, Ratecenter, State, and TN.
+The search method is the most robust option for searching through Flowroute's purchasable phone number inventory. It allows you to search by NPA, NXX, Ratecenter, State, and/or TN.
 
 #####Usage
 
@@ -263,7 +262,7 @@ The method supports the following parameters:
 
 | Parameter  | Required|   Type|          Description                                         |
 |------------|----------|------|--------------------------------------------------------|
-| `limit`     | False    | integer| Controls the number of items returned. The maximum number of items is 200. If neither a number nor `null` are passed, a default of ten NPA NXX combinations are returned.                      |
+| `limit`     | False    | integer| Controls the number of items returned. The maximum number of items is 200. If neither a number nor `null` are passed, a default of ten NPANXX combinations are returned.                      |
 | `npa`       | False, unless `nxx` is passed, then `True`.  | integer| Three-digit area code. Limits results to the specified NPA. If `null` is passed, all NPAs are returned. Partial number search is also supported. For example, passing `20` returns all NPA and NXX results that include `20`.|
 | `nxx`       |False  | integer |Three-digit exchange. Limits the results for the specified NXX. If no `nxx` is passed, `null` is used and all results are returned. Partial search is also supported. For example, passing `'45'` for the `nxx` returns exchanges that include `45`. Note that if you pass an `nxx` you must also pass an `npa`. |
 | `page`      | False   | integer |Sets which page of the results is returned.` Next` and `Prev` URLs provided at the bottom of the response provide navigation pointers. If `null` is passed, all pages are returned.   |            |
@@ -279,7 +278,7 @@ In the following example, a search request sets the `limit` to `3`, `206` for th
 	
 #####Example response
 
-Based on the search parameters, the following is returned:
+Based on the passed search parameters, the following is returned:
 
 	{
 	  "tns": {
@@ -331,14 +330,14 @@ Parameter | Description                                             |
 ||	<ul><ul><li> `initial_cost`- The one-time fixed cost for that telephone number. The default value is USD `1.00`.</ul>|
 | | <ul><ul><li>`monthly_cost`- The recurring monthly cost to maintain that telephone number. The default value is USD `1.25`.</ul>|
 | |<ul><ul><li>`billing_methods`- Displays the billing methods available for the telephone number: <ul><li>`[0] VPRI`, or</ul></li> <ul><li>`[1] METERED` </ul></li>|
-||	`ratecenter`- The ratecenter associated with the NPA NXX.|
-||	`state`- The US state or Canadian province or territory in which the NPA NXX is located.</ol>|
+||	`ratecenter`- The ratecenter associated with the NPANXX.|
+||	`state`- The US state or Canadian province or territory in which the NPANXX is located.</ol>|
 
 ### TelephoneNumbersController<a name=telephoneno></a>
 
 The TelephoneNumbersController contains all of the methods necessary to purchase and manage a Flowroute number. Methods must be added to a Ruby file and that file run from the **flowroute-numbers-ruby** directory in a terminal window.. For example, you can create a **telephone.rb** file contains the following information:
 
-	require '/users/jdoe/sdks/flowroute-numbers-ruby/lib/flowroute_numbers/'
+	require '/Users/jdoe/Documents/SDKs/flowroute-numbers-ruby/lib/flowroute_numbers/'
 	require 'rubygems'
 	
 	FlowrouteNumbers::Configuration.username = 'AccessKey'
@@ -381,14 +380,14 @@ In the following method, the billing method is VPRI, and the phone number is a n
 
 #####Example response
 
-*	A successful purchase returns an empty string: `" "`
+*	A successful purchase returns an empty string: `""`
 * 	An error response can return the following:
 
 	| Error code | Message  | Description                                           |
 	|------------|----------|-------------------------------------------------------|
 	|No error code.  |HTTP Response Not OK|This can be caused when an incorrect phone number or billing method are entered.|
 
-#### `list_account_telephone_numbers limit(nil, page: nil, pattern: nil)`<a name=listnumbers></a>
+#### `list_account_telephone_numbers (limit, page, pattern)`<a name=listnumbers></a>
 
 The `listAccountTelephoneNumbers` method is used to retrieve a list of all of the phone numbers on your Flowroute account.
 
@@ -450,7 +449,7 @@ Parameter | Description                                             |
 ||	<ul><ul><li> `billing_method`- The billing method assigned to the phone number when the number was purchased. This will be either `METERED` or `VPRI`.</ul>|
 | |<ul><ul><li>`routes`- Displays the primary `[0]` and failover `[1]` routes for the phone number: <ul><li>`type` — Indicates the type of route: `HOST`, `PSTN`, or `URI`. If no route is assigned, `SIP-REG` is the default name assigned to the route.</ul></li> <ul><li>`name` — Name of the route. If no `name` was given to the route, `sip-reg` is the assigned default name.</ul></li> **Note:** Routes are created using the [createNewRoute](#createroute) method and existing routes can be viewed using the [mlist](#listroutes) method.|
 
-#### `telephone_number_details (telephone number)`<a name=phonedetails></a>
+#### `telephone_number_details (number)`<a name=phonedetails></a>
 
 The `telephone_number_details` method is used to retrieve the billing method, primary route, and failover route for the specified telephone number. 
 
@@ -459,13 +458,13 @@ The `telephone_number_details` method is used to retrieve the billing method, pr
 
 Add the following line between `tnc = FlowrouteNumbers::TelephoneNumbersController.new()` and `puts response`:
 
-	response = tnc.telephone_number_details('telephoneNumber')
+	response = tnc.telephone_number_details('number')
 
 The method takes the following parameter:
 
 | Parameter       | Required | Type   |Description                                    |
 |-----------------|----------|--------|-------------------------------------------|
-| `telephoneNumber` | True     | string |    The telephone number on which to query. You must use an 11-digit, E.164 number, formatted as *`1NPANXXXXXX`*. Neither partial number search nor multiple number search are supported. |
+| `number` | True     | string |    The telephone number on which to query. You must use an 11-digit, E.164 number, formatted as *`1NPANXXXXXX`*. Neither partial number search nor multiple number search are supported. |
 
 ##### Example Usage
 
@@ -544,7 +543,7 @@ An empty string (`""`) is returned for a successful update. To view the route ch
 
 The Inbound Routes Controller contains the methods required to view all of your existing inbound routes and to create new inbound routes.Methods must be added to a Ruby file and that file run from the **flowroute-numbers-ruby** directory in a terminal window. For example, you can create a **routes.rb** file that must contain the following information:
 
-	require '/users/jdoe/sdks/flowroute-numbers-ruby/lib/flowroute_numbers/'
+	require '/Users/jdoe/Documents/SDKs/flowroute-numbers-ruby/lib/flowroute_numbers/'
 	require 'rubygems'
 	
 	FlowrouteNumbers::Configuration.username = 'AccessKey'
@@ -559,7 +558,7 @@ Add the following InboundRoutesController methods between `irc = FlowrouteNumber
 *	[`list`](#listroutes)
 * 	[`createNewRoute`](#createroute)
 
-#### `list limit(limit,page)`<a name=listroutes></a>
+#### `list (limit, page)`<a name=listroutes></a>
 
 The list method is used to return all of the existing inbound routes from your Flowroute account.
 
@@ -615,7 +614,7 @@ The following information is returned in the response:
 |-----------|--------------------------------------------------------------------------------|
 | `[routeName]` |  The name of the route assigned using the `createNewRoute` method. It is composed of:<ul> <li>`type`  The type of route created using the `createNewRoute` method. Will be `HOST`, `PSTN`, or `URI`. If no route type was assigned, `SIP-REG` is used as the default. <li>`value` Value of the route, assigned to the route `type` using the `createNewRoute` method.</ul</li>|
 
-#### `create_new_route(route_name, type, value)`<a name=createroute></a>
+#### `create_new_route(name, type, value)`<a name=createroute></a>
 
 The `create_new_route `method is used to create a new inbound route.
 
@@ -628,9 +627,9 @@ The method takes the following parameters:
 
 | Parameter | Required | Type| Description                                                                        |
 |-----------|----------|------|-----------------------------------------------------------------------------|
-| `routeName` | True    |  string| The name of the new route. An unlimited number of alphanumeric characters is supported. There are no unrestricted characters.  |
+| `name` | True    |  string| The name of the new route. An unlimited number of alphanumeric characters is supported. There are no unrestricted characters.  |
 | `type`      | True   |  string |The type of route you would like to create. Valid options are `HOST`, `PSTN`, and `URI`. |
-| `value`     | True    |string |  Value of the route, dependent on the `type`: <ul><li>If `HOST`, the value must be an IP address or URL with an optional port number—for example, an IP address could be `24.239.23.40:5060` or a URL could be `myphone.com`. If no port is specified, the server will attempt to use DNS SRV records. <li>If `PSTN`, the value must be formatted as a valid E.164, 11-digit formatted North American phone number—for example,`12065551212 `. <li>If `URI`, the value must be formatted as  `protocol:user@domain[:port][;transport=<tcp/udp>`—for example, `sip:alice@seattle.com`,  `sip: 12065551212@215.122.69.152:5060;transport=tcp`, or `sips:securecall@securedserver.com`.</li></ul>              |
+| `value`     | True    |string |  Value of the route, dependent on the `type`: <ul><li>If `HOST`, the value must be an IP address or URL with an optional port number—for example, an IP address could be `24.239.23.40:5060` or a URL could be `myphone.com`. If no port is specified, the server will attempt to use DNS SRV records. <li>If `PSTN`, the value must be formatted as a valid E.164, 11-digit formatted North American phone number—for example,`12065551212 `. You cannot use the same number as the number for which the route is created. <li>If `URI`, the value must be formatted as  `protocol:user@domain[:port][;transport=<tcp/udp>`—for example, `sip:alice@seattle.com`,  `sip: 12065551212@215.122.69.152:5060;transport=tcp`, or `sips:securecall@securedserver.com`. You cannot use the same number as the number for which the route is created.</li></ul>              |
 ##### Example Usage
 
 In the following example, routes are created for `PSTN`, `HOST`, and `URI`:
