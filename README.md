@@ -88,7 +88,11 @@ Importing the SDK requires that you run commands either by creating and running 
 
 		puts response
 
-	>**Note:** `response` is a variable name that can be of your own choosing and can be of unlimited characters. However, the name you choose should be used consistently when you use a Controller and method. For these SDK examples, `response` is used. 
+	>**Important:** Throughout this SDK, `response` is used in examples. `response` is a variable name that can be changed to a name of your own choosing. It can support an unlimited number of characters. If you choose to rename `response`, make sure that any method that references that variable name is also changed to use the new name. For example, you might have the following:
+>
+>`blob = pnc.list_available_np_as(limit:3)`
+>
+>`puts blob` 
 
 The following shows an example of a single Ruby file that instantiates all Controllers:
 
@@ -101,9 +105,6 @@ The following shows an example of a single Ruby file that instantiates all Contr
 	pnc = FlowrouteNumbers::PurchasablePhoneNumbersController.new()
 	tnc = FlowrouteNumbers::TelephoneNumbersController.new()
 	irc = FlowrouteNumbers::InboundRoutesController.new()
-	
-	puts response
-
 
 You can create your own Ruby file by any of the following methods:
  
@@ -113,7 +114,7 @@ You can create your own Ruby file by any of the following methods:
  
  3.	Create a unique file for each method. Each file will then contain the lines instantiating the relevant Controller.
 
-This SDK describes the second option, creating unique Ruby files. However, regardless of which option you select, the file(s) should be saved in the **flowroute-numbers-ruby** directory. When you want to run a method, run the following on the command line in the **flowroute-numbers-ruby** directory:
+This SDK describes the second option, creating three Ruby files, one for each Controller. However, regardless of which option you select, the file(s) should be saved in the **flowroute-numbers-ruby** directory. When you want to run a method, run the following on the command line in the **flowroute-numbers-ruby** directory:
 
 		ruby <Controller File Name.rb>
 
@@ -141,9 +142,19 @@ The Purchasable Phone Numbers Controller contains all of the methods necessary t
 
 	pnc = FlowrouteNumbers::PurchasablePhoneNumbersController.new()
 	
+	#List Available NPAs
+	response = pnc.list_available_np_as(limit:nil)
+	puts response
+	
+	#List NPA and NXX
+	pnc.list_area_and_exchange(limit:nil, npa:nil, page:nil)
+	puts response
+	
+	#Search
+	response = pnc.search(limit:nil, npa:nil, nxx:nil, page:nil, ratecenter:"nil", state:"nil", tn:nil)
 	puts response
 
-You can then add any of the following Controller methods after the line above:
+Add any of the following methods after `pnc = FlowrouteNumbers::PurchasablePhoneNumbersController.new()`. If you do not want to execute a specific method, comment those lines out with `#`
 
 *	[`listAvailableNPAs()`](#listnpa)
 
@@ -157,23 +168,21 @@ The list_available_np_as method allows you to retrieve a list of every NPA (area
 
 #####Usage
 
-Add the following line to your Ruby file between `pnc = FlowrouteNumbers::PurchasablePhoneNumbersController.new()` and the `put response`
-
-	response = pnc.list_available_np_as(limit:nil);
-
->**Note:** `response` can be any name of you choose, and of any length, but the name you choose must be used consistently in the method.
+	response = pnc.list_available_np_as(limit:nil)
+	puts response
 
 | Parameter | Required |Type |Description                           |
 |-----------|----------|-----|--------------------------------|
-| `limit`     | False  |integer| Defines controls the number of items returned. The maximum number of items is 200. If no number is passed, `nil` is used by default, and a maximum of ten NPAs are returned. |
+| `limit`     | False  |integer| Controls the number of items returned. The maximum number of items is 200. If no number is passed, `nil` is used by default, and a maximum of ten NPAs are returned. |
 
 ##### Example usage
 	
 	response = pnc.list_available_np_as(limit:3)
+	put response
 
 #####Example response
 
-Based on the request above, `put response` returns the following three NPAs.
+Based on the request above, the following three NPAs are returned:
 
 	{
   	"npas": {
@@ -199,12 +208,9 @@ Based on the request above, `put response` returns the following three NPAs.
 The `listAreaAndExchange` method allows you to retrieve a list of every NPANXX (area code and exchange) combination available in Flowroute's phone number inventory.
 
 #####Usage
-
-Add the following line to your Ruby file between `pnc = FlowrouteNumbers::PurchasablePhoneNumbersController.new()` and the `put response`
 	
-	response = pnc.list_area_and_exchange(limit:x, npa:nil, page:nil)
-
->**Note:** `response` can be any name of your choosing, and of any length, but the name you choose must be used consistently in the method.
+	response = pnc.list_area_and_exchange(limit:nil, npa:nil, page:nil)
+	puts response
 	
 The method takes the following parameters:
 
@@ -219,8 +225,10 @@ The method takes the following parameters:
 In the following, a request is made to limit the results to `2`, the NPA to `203` and to display page `3`:
 
 	response = pnc.list_area_and_exchange(limit:2, npa:203, page:3)
+	puts response
 
 #####Example response
+
 Based on the example usage above, the following two NPANXX combinations are returned on page `2`, organized by `npanxxs`. 
 
 ```sh
@@ -239,12 +247,7 @@ Based on the example usage above, the following two NPANXX combinations are retu
   }
 }
 ```
-
-##### Example Usage
-		
-	response = pnc.list_area_and_exchange(limit:1, npa:206, page:2)
-
->**Note:** `response` can be any name of your choosing, and of any length, but the name you choose must be used consistently in the method.	
+	
 	
 #### `search limit: (nil, npa, nxx, page, ratecenter, state, tn)`<a name=searchno></a>
 
@@ -255,8 +258,9 @@ The search method is the most robust option for searching through Flowroute's pu
 Add the following line to your Ruby file between `pnc = FlowrouteNumbers::PurchasablePhoneNumbersController.new()` and the `put response`
 
 	response = pnc.search(limit:nil, npa:nil, nxx:nil, page:nil, ratecenter:"nil", state:"nil", tn:nil)
+	puts response
 
-The method supports the following parameters:
+The method takes the following parameters:
 
 | Parameter  | Required|   Type|          Description                                         |
 |------------|----------|------|--------------------------------------------------------|
@@ -273,6 +277,7 @@ The method supports the following parameters:
 In the following example, a search request sets the `limit` to `3`, `206` for the `npa`, `641` for the `nxx`, `2` for the `page`, `SEATTLE` for the `ratecenter`, `WA` for the `state`, and `nil` for the `tn`.
 
 	response = pnc.search(limit:3, npa:206, nxx:641, page:2, ratecenter:"SEATTLE", state:"WA", tn:nil)
+	puts response
 	
 #####Example response
 
@@ -343,9 +348,26 @@ The TelephoneNumbersController contains all of the methods necessary to purchase
 
 	tnc = FlowrouteNumbers::TelephoneNumbersController.new()
 	
-	puts response
+	#Purchase a Telephone Number
+	response = tnc.purchase(billing="billing method", number="phone number")
+	put response
+	
+	#List Account Telephone Numbers
+	response = tnc.list_account_telephone_numbers(limit:nil, page:nil, pattern:nil)
+	put response
+	
+	#Telephone Number Details
+	response = tnc.telephone_number_details('number')
+	put response
+	
+	#Update Telephone Number Routes
+	rtes = [name: "primary route name", name: "failover route name"]
+	response = tnc.update(number='telephoneNumbe', routes=rtes)
+	put response
+	
+	
 
-Add any of the following TelephoneNumbersController methods between `tnc = FlowrouteNumbers::TelephoneNumbersController.new()` and `puts response` and then comment out each method as needed.
+Add any of the following TelephoneNumbersController methods after `tnc = FlowrouteNumbers::TelephoneNumbersController.new()`. If you do not want to execute a specific method, comment those lines out with `#`
 
 *	[`purchase`](#purchaseno)
 *	[`listAccountTelephoneNumbers`](#listnumbers)
@@ -358,13 +380,10 @@ The purchase method is used to purchase a telephone number from Flowroute's inve
 
 #####Usage
 
-Add the following line between `tnc = FlowrouteNumbers::TelephoneNumbersController.new()` and `puts response`:
-
 	response = tnc.purchase(billing="billing method", number="phone number")
+	put response
 
->**Note:** `response` can be any name of your choosing, and of any length, but the name you choose must be used consistently in the method.
-
-The parameters can take the following values:
+The method takes the following parameters:
 
 | Parameter       | Required | Type|Description                                                 |                                                          
 |-----------------|----------|--------|-------------------------------------------------------|
@@ -375,6 +394,7 @@ The parameters can take the following values:
 In the following method, the billing method is VPRI, and the phone number is a number retrieved from the [search](#searchno) method.
 
 	response = tnc.purchase(billing="VPRI", number="12066417744")
+	put response
 
 #####Example response
 
@@ -390,12 +410,10 @@ In the following method, the billing method is VPRI, and the phone number is a n
 The `listAccountTelephoneNumbers` method is used to retrieve a list of all of the phone numbers on your Flowroute account.
 
 #####Usage
-Add the following line between `tnc = FlowrouteNumbers::TelephoneNumbersController.new()` and `puts response`:
 
 	response = tnc.list_account_telephone_numbers(limit:nil, page:nil, pattern:nil)
+	put response
 	
->**Note:** `response` can be any name of your choosing, and of any length, but the name you choose must be used consistently in the method.
-
 The method takes the following parameters:
 
 | Parameter | Required |     Type | Description                                    |
@@ -409,6 +427,7 @@ The method takes the following parameters:
 For this example, the `limit` is `1`, the `page` is `nil`, and the `pattern` includes `206`.
 	
 	response = tnc.list_account_telephone_numbers(limit:1, page:nil, pattern:206)
+	put response
 
 #####Example response
 
@@ -438,6 +457,7 @@ Based on the passed parameters, the number purchased using the [purchase](#purhc
   		}
 	}   
 #####Response field descriptions
+
 The following information is returned in the response:
 
 Parameter | Description                                             |
@@ -453,10 +473,8 @@ The `telephone_number_details` method is used to retrieve the billing method, pr
 
 #####Usage
 
-
-Add the following line between `tnc = FlowrouteNumbers::TelephoneNumbersController.new()` and `puts response`:
-
 	response = tnc.telephone_number_details('number')
+	put response
 
 The method takes the following parameter:
 
@@ -469,9 +487,11 @@ The method takes the following parameter:
 In the following example, the details for the number purchased using the [purchase](#purchaseno) method is passed:
 
 	response = tnc.telephone_number_details('12066417744')
+	put response
 
 #####Example response
-The response returns the following information phone number details:
+
+The response returns the following phone number details:
 
 	{
  	 "billing_method": "VPRI",
@@ -511,12 +531,12 @@ The `update` method is used to update both the primary and failover route for a 
 >**Note:** In order to apply an existing route to a number, the route must first be created using the [createNewRoute](#createRoute) method. To view a list of your existing routes, use the [`list`](#listroutes) method.
 
 #####Usage
-Add the following lines between `tnc = FlowrouteNumbers::TelephoneNumbersController.new()` and `puts response`:
 
 	rtes = [name: "primary route name", name: "failover route name"]
 	response = tnc.update(number='telephoneNumbe', routes=rtes)
+	put response
 
->**Important:** `rtes` and `response` are variables that can be assigned any name of you choose, and of any length; however, you must use those names consistently within the method.
+>**Important:** `rtes` is a variable that can be assigned any name of you choose, and of any length; however, you must use those names consistently within the method.
 
 The method takes the following parameters:
 
@@ -531,6 +551,7 @@ The following example updates the routes for the telephone number purchased usin
 	
 	rtes = [{name: "HOSTroute1"}, {name: "URIroute1"}]
 	response = tnc.update(number='12066417744', routes=rtes)
+	put response
 
 #####Example response
 
@@ -549,9 +570,15 @@ The Inbound Routes Controller contains the methods required to view all of your 
 
 	irc = FlowrouteNumbers::InboundRoutesController.new()
 	
-	puts response
+	#List Routes
+	response = irc.list(limit:nil, page:nil)
+	put response
+	
+	#Create a New Route
+	response = irc.create_new_route(route_name='route_name',type='route_type',value='value') 
+	put response   
 
-Add the following InboundRoutesController methods between `irc = FlowrouteNumbers::InboundRoutesController.new()` and `puts response` and then comment out each method as needed. You can also create individual files for each method as long as each file contains the information above.
+Add the following InboundRoutesController methods after `irc = FlowrouteNumbers::InboundRoutesController.new()`.If you do not want to execute a specific method, comment those lines out with `#`.
 
 *	[`list`](#listroutes)
 * 	[`createNewRoute`](#createroute)
@@ -561,10 +588,9 @@ Add the following InboundRoutesController methods between `irc = FlowrouteNumber
 The list method is used to return all of the existing inbound routes from your Flowroute account.
 
 #####Usage
-
-Add the following InboundRoutesController methods between `irc = FlowrouteNumbers::InboundRoutesController.new()` and `puts response`
  
-		response = irc.list(limit:nil, page:nil);
+		response = irc.list(limit:nil, page:nil)
+		put response
 
 The method takes the following parameters:
 
@@ -577,9 +603,11 @@ The method takes the following parameters:
 
 In the following example, a limit of `10` routes is to be returned, and only page `1` displayed:
 
-	response = irc.list(limit:10, page:1);
+	response = irc.list(limit:10, page:1)
+	put response
 	
 #####Example response
+
 Based on the parameters passed in the request, the following is returned:
 
 	{
@@ -617,9 +645,9 @@ The following information is returned in the response:
 The `create_new_route `method is used to create a new inbound route.
 
 #####Usage
-Add the following line between `irc = FlowrouteNumbers::InboundRoutesController.new()` and `puts response`. You can create multiple routes simultaneously by adding the line for each route to create.
 
-	response = irc.create_new_route(route_name='route_name',type='route_type',value='value')    
+	response = irc.create_new_route(route_name='route_name',type='route_type',value='value') 
+	put response   
 
 The method takes the following parameters:
 
@@ -633,8 +661,11 @@ The method takes the following parameters:
 In the following example, routes are created for `PSTN`, `HOST`, and `URI`:
 
 	response = irc.create_new_route(route_name='MyPSTN',type='PSTN',value='12065551212')
+	put response
 	response = irc.create_new_route(route_name='MyHost',type='HOST',value='24.239.23.40:5060')
+	put response
 	response = irc.create_new_route(route_name='MyURI',type='URI',value='sip:12065551212@215.122.69.152:5060')
+	put response
 
 #####Example response
 
