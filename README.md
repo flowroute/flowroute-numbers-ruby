@@ -13,15 +13,16 @@ The full documentation for the v1 Flowroute API is available [here](https://deve
 
 ##Before you begin
 
-The following are required before you can deploy the SDK.
+The following is required before you can deploy the SDK.
 
 ### Have your API credentials
 
 You will need your Flowroute API credentials (Access Key and Secret Key). These can be found on the **Preferences > API Control** page of the [Flowroute](https://manage.flowroute.com/accounts/preferences/api/) portal. If you do not have API credentials, contact <mailto:support@flowroute.com>.
 
-### Know your Flowroute phone number
+### A code text editor
 
-To create and send a message, you will need your Flowroute phone number, which should be enabled for SMS. If you do not know your phone number, or if you need to verify whether or not it is enabled for SMS, you can find it on the [DIDs](https://manage.flowroute.com/accounts/dids/) page of the Flowroute portal.
+Steps in this SDK describe creating one or more script files that allow you to execute the methods. Script files can be created either using a terminal window shell or through using a code text editor. For example, *Sublime Text*. 
+
 ## Install the required libraries
 
 > **Note:** You must be connected to the Internet in order to install the required libraries.
@@ -49,9 +50,9 @@ The SDK uses the UniRest Ruby library, which must be installed before you can us
 
 ## Import the SDK and set up your API credentials
 
-Importing the SDK requires that you run commands either by creating and running a script or through the shell. The following instructions describe importing the SDK and running the `messages_controller` by creating and running a script.
+Importing the SDK in order to execute Controller methods requires that you either run commands by creating and running a script or by running commands directly through the shell. The following instructions describe importing the SDK and running the [Controllers](#controllers) by creating and running a script.
 
-1.	Using a code text editor — for example, *Sublime Text* — create a new file.
+1.	Using a code text editor create a new file.
 
 2.	At the top of the file, first add a line pointing to the library installation:
 
@@ -76,13 +77,13 @@ Importing the SDK requires that you run commands either by creating and running 
 
 	>**Note:** You can hard code these values in **Configuration.rb**. However, if you do this you will need to rebuild the gem and install it.
 
-5.	Add the following lines to instantiate the three Controllers for later use:
+5.	Add the following lines to instantiate the three Controllers for use:
 
 		pnc = FlowrouteNumbers::PurchasablePhoneNumbersController.new()
 		tnc = FlowrouteNumbers::TelephoneNumbersController.new()
 		irc = FlowrouteNumbers::InboundRoutesController.new()     
 	
-	>**Note:** The Controllers use variable names. If you do not want to assign variable names to the Controllers and pass your credentials to each controller, you can hard code the credentials in **Configuration.rb** and then call each controller by its full name. This SDK does not cover those steps.
+	>**Note:** The Controllers use variable names (`pnc`, `tnc`, and `irc`. If you do not want to assign variable names to the Controllers and pass your credentials to each controller, you can hard code the credentials in **Configuration.rb** and then call each controller by its full name. This SDK does not cover those steps.
 
 6.	Optionally, add a line that prints out a response when parameters are passed to a method:
 
@@ -105,6 +106,8 @@ The following shows an example of a single Ruby file that instantiates all Contr
 	pnc = FlowrouteNumbers::PurchasablePhoneNumbersController.new()
 	tnc = FlowrouteNumbers::TelephoneNumbersController.new()
 	irc = FlowrouteNumbers::InboundRoutesController.new()
+	
+	puts response
 
 You can create your own Ruby file by any of the following methods:
  
@@ -118,9 +121,9 @@ This SDK describes the second option, creating three Ruby files, one for each Co
 
 		ruby <Controller File Name.rb>
 
-## Controllers
+## Controllers<a name=controllers></a>
 
-This following sections describe **flowroute-numbers-ruby** Controllers:
+The following sections describe **flowroute-numbers-ruby** Controllers:
 
 *	[`PurchasablePhoneNumbersController`](#purchaseno)
 
@@ -132,7 +135,7 @@ This following sections describe **flowroute-numbers-ruby** Controllers:
 
 ### PurchasablePhoneNumbersController<a name=purchaseno></a>
 
-The Purchasable Phone Numbers Controller contains all of the methods necessary to search through Flowroute's phone number inventory. Methods must be added to a Ruby file and that file run from the **flowroute-numbers-ruby** directory in a terminal window. For example, you can create a **purchase.rb** file contains the following information:
+The PurchasablePhoneNumbersController contains all of the methods necessary to search through Flowroute's phone number inventory. Methods are added to a Ruby file, and then that file run from the **flowroute-numbers-ruby** directory in a terminal window. The following shows an example **purchase.rb** file containing all of the Controller's methods:
 
 	require '/Users/jdoe/Documents/SDKs/flowroute-numbers-ruby/lib/flowroute_numbers/'
 	require 'rubygems'
@@ -144,17 +147,16 @@ The Purchasable Phone Numbers Controller contains all of the methods necessary t
 	
 	#List Available NPAs
 	response = pnc.list_available_np_as(limit:nil)
-	puts response
-	
+		
 	#List NPA and NXX
 	pnc.list_area_and_exchange(limit:nil, npa:nil, page:nil)
-	puts response
-	
+		
 	#Search
 	response = pnc.search(limit:nil, npa:nil, nxx:nil, page:nil, ratecenter:"nil", state:"nil", tn:nil)
+	
 	puts response
 
-Add any of the following methods after `pnc = FlowrouteNumbers::PurchasablePhoneNumbersController.new()`. If you do not want to execute a specific method, comment those lines out with `#`
+Add any of the following methods after `pnc = FlowrouteNumbers::PurchasablePhoneNumbersController.new()`, but before `puts response`. If you do not want to execute a specific method, comment those lines out with `#`
 
 *	[`listAvailableNPAs()`](#listnpa)
 
@@ -164,12 +166,14 @@ Add any of the following methods after `pnc = FlowrouteNumbers::PurchasablePhone
 
 #### `list_available_np_as(limit)`<a name=listnpa></a>
 
-The list_available_np_as method allows you to retrieve a list of every NPA (area code) available in Flowroute's phone number inventory.
+The `list_available_np_as` method allows you to retrieve a list of every NPA (area code) available in Flowroute's phone number inventory.
 
 #####Usage
 
+Add the following lines to your file:
+
+	#List Available NPAs
 	response = pnc.list_available_np_as(limit:nil)
-	puts response
 
 | Parameter | Required |Type |Description                           |
 |-----------|----------|-----|--------------------------------|
@@ -177,8 +181,8 @@ The list_available_np_as method allows you to retrieve a list of every NPA (area
 
 ##### Example usage
 	
+	#List Available NPAs
 	response = pnc.list_available_np_as(limit:3)
-	put response
 
 #####Example response
 
@@ -203,14 +207,25 @@ Based on the request above, the following three NPAs are returned:
    	 "next": "/v1/available-tns/npas/?limit=3&page=2"
   	}
 	}
+
+#####Error response
+
+The following error can be returned:
+
+| Error code | Message  | Description                                           |
+|------------|----------|-------------------------------------------------------|
+|No error code|HTTP Response Not OK|Typically this occurs when a `limit` does not fall within the allowed number range, such as greater than `200` or a negative number. |
+
 #### `list_area_and_exchange (limit, npa, page)`<a name=listnpanxx></a>
 
 The `listAreaAndExchange` method allows you to retrieve a list of every NPANXX (area code and exchange) combination available in Flowroute's phone number inventory.
 
 #####Usage
+
+Add the following lines to your file:
 	
+	#List NPA and NXX
 	response = pnc.list_area_and_exchange(limit:nil, npa:nil, page:nil)
-	puts response
 	
 The method takes the following parameters:
 
@@ -224,8 +239,8 @@ The method takes the following parameters:
 
 In the following, a request is made to limit the results to `2`, the NPA to `203` and to display page `3`:
 
+	#List NPA and NXX
 	response = pnc.list_area_and_exchange(limit:2, npa:203, page:3)
-	puts response
 
 #####Example response
 
@@ -247,7 +262,16 @@ Based on the example usage above, the following two NPANXX combinations are retu
   }
 }
 ```
-	
+
+>**Note:** If no results are found based on the passed parameters, `{}` is returned as a response.
+
+#####Error response
+
+The following error can be returned:
+
+| Error code | Message  | Description                                           |
+|------------|----------|-------------------------------------------------------|
+|No error code|HTTP Response Not OK|Typically this occurs when a `limit` does not fall within the allowed number range, such as greater than `200` or a negative number; or if `0` or a negative number are passed for the `page`. |
 	
 #### `search limit: (nil, npa, nxx, page, ratecenter, state, tn)`<a name=searchno></a>
 
@@ -255,10 +279,10 @@ The search method is the most robust option for searching through Flowroute's pu
 
 #####Usage
 
-Add the following line to your Ruby file between `pnc = FlowrouteNumbers::PurchasablePhoneNumbersController.new()` and the `put response`
+Add the following lines to your file:
 
+	#Search
 	response = pnc.search(limit:nil, npa:nil, nxx:nil, page:nil, ratecenter:"nil", state:"nil", tn:nil)
-	puts response
 
 The method takes the following parameters:
 
@@ -268,16 +292,16 @@ The method takes the following parameters:
 | `npa`       | False, unless `nxx` is passed, then `True`.  | integer| Three-digit area code. Limits results to the specified NPA. If `null` is passed, all NPAs are returned. Partial number search is also supported. For example, passing `20` returns all NPA and NXX results that include `20`.|
 | `nxx`       |False  | integer |Three-digit exchange. Limits the results for the specified NXX. If no `nxx` is passed, `null` is used and all results are returned. Partial search is also supported. For example, passing `'45'` for the `nxx` returns exchanges that include `45`. Note that if you pass an `nxx` you must also pass an `npa`. |
 | `page`      | False   | integer |Sets which page of the results is returned.` Next` and `Prev` URLs provided at the bottom of the response provide navigation pointers. If `null` is passed, all pages are returned.   |            |
-| `ratecenter` | False |string             | Limits the results to the specified ratecenter.  There is no limit on the number of characters that can be passed. This field is case-sensitive and must be enclosed in quotes (`""`). |                      |
-| `state`      | False, unless `ratecenter` is passed, then `True`.|string | Limits results to the specified state or Canadian province. Must be formatted using the two-letter state or province/territory abbreviation. This field is case-sensitive and must be enclosed in quotes (`""`).                    |
-| `tn`         | False  |string             | Limits results to the specified telephone number. The phone number must be passed as an 11-digit number formatted as *`1NPAXXXXXX`*.  |##### Example Usage
+| `ratecenter` | False |string             | Limits the results to the specified ratecenter.  There is no limit on the number of characters that can be passed. This field is case-insensitive and must be enclosed in quotes (`""`). |                      |
+| `state`      | False, unless `ratecenter` is passed, then `True`.|string | Limits results to the specified state or Canadian province. Must be formatted using the two-letter state or province/territory abbreviation. This field is case-insensitive and must be enclosed in quotes (`""`).                    |
+| `tn`         | False  |string             | Limits results to the specified telephone number. The phone number must be passed as an 11-digit number formatted as *`1NPAXXXXXX`*.  |
 
 ##### Example Usage
 
 In the following example, a search request sets the `limit` to `3`, `206` for the `npa`, `641` for the `nxx`, `2` for the `page`, `SEATTLE` for the `ratecenter`, `WA` for the `state`, and `nil` for the `tn`.
 
+	#Search
 	response = pnc.search(limit:3, npa:206, nxx:641, page:2, ratecenter:"SEATTLE", state:"WA", tn:nil)
-	puts response
 	
 #####Example response
 
@@ -322,6 +346,8 @@ Based on the passed search parameters, the following is returned:
   		}
 	}		
 
+>**Note:** If no results are found based on the passed parameters, `{}` is returned as a response.
+
 #####Response field descriptions	
 
 The following information is returned in the response:
@@ -336,9 +362,17 @@ Parameter | Description                                             |
 ||	`ratecenter`- The ratecenter associated with the NPANXX.|
 ||	`state`- The US state or Canadian province or territory in which the NPANXX is located.</ol>|
 
+#####Error response
+
+The following error can be returned:
+
+| Error code | Message  | Description                                           |
+|------------|----------|-------------------------------------------------------|
+|No error code|HTTP Response Not OK|Typically this occurs when a passed value does not fall within the range of allowed values. For example, this might be a `limit` that does not fall within the `1` to `200` range. |
+
 ### TelephoneNumbersController<a name=telephoneno></a>
 
-The TelephoneNumbersController contains all of the methods necessary to purchase and manage a Flowroute number. Methods must be added to a Ruby file and that file run from the **flowroute-numbers-ruby** directory in a terminal window.. For example, you can create a **telephone.rb** file contains the following information:
+The TelephoneNumbersController contains all of the methods necessary to purchase and manage a Flowroute number. Methods are added to a Ruby file, and then that file run from the **flowroute-numbers-ruby** directory in a terminal window. The following shows an example file, **telephone.rb**, containing all the Controller's methods.
 
 	require '/Users/jdoe/Documents/SDKs/flowroute-numbers-ruby/lib/flowroute_numbers/'
 	require 'rubygems'
@@ -350,24 +384,21 @@ The TelephoneNumbersController contains all of the methods necessary to purchase
 	
 	#Purchase a Telephone Number
 	response = tnc.purchase(billing="billing method", number="phone number")
-	put response
 	
 	#List Account Telephone Numbers
 	response = tnc.list_account_telephone_numbers(limit:nil, page:nil, pattern:nil)
-	put response
 	
 	#Telephone Number Details
 	response = tnc.telephone_number_details('number')
-	put response
 	
 	#Update Telephone Number Routes
 	rtes = [name: "primary route name", name: "failover route name"]
 	response = tnc.update(number='telephoneNumbe', routes=rtes)
-	put response
 	
+	puts response
 	
 
-Add any of the following TelephoneNumbersController methods after `tnc = FlowrouteNumbers::TelephoneNumbersController.new()`. If you do not want to execute a specific method, comment those lines out with `#`
+Add any of the following TelephoneNumbersController methods after `tnc = FlowrouteNumbers::TelephoneNumbersController.new()`, but before `puts response`. If you do not want to execute a specific method, comment those lines out with `#`
 
 *	[`purchase`](#purchaseno)
 *	[`listAccountTelephoneNumbers`](#listnumbers)
@@ -380,8 +411,10 @@ The purchase method is used to purchase a telephone number from Flowroute's inve
 
 #####Usage
 
+Add the following lines to your file:
+
+	#Purchase a Telephone Number
 	response = tnc.purchase(billing="billing method", number="phone number")
-	put response
 
 The method takes the following parameters:
 
@@ -391,19 +424,22 @@ The method takes the following parameters:
 | `number = phone number` | True    | string | The `phone number` to purchase, using an E.164 *`1NPANXXXXXX`* format.                |
 ##### Example Usage
 
-In the following method, the billing method is VPRI, and the phone number is a number retrieved from the [search](#searchno) method.
+In the following method, the billing method is VPRI, and the phone number to purchase is one retrieved from the [search](#searchno) method.
 
+	#Purchase a Telephone Number
 	response = tnc.purchase(billing="VPRI", number="12066417744")
-	put response
 
 #####Example response
 
-*	A successful purchase returns an empty string: `""`
-* 	An error response can return the following:
+A successful purchase returns an empty line.
 
-	| Error code | Message  | Description                                           |
-	|------------|----------|-------------------------------------------------------|
-	|No error code.  |HTTP Response Not OK|This can be caused when an incorrect phone number or billing method are entered.|
+#####Error response
+
+An error response can return the following:
+
+| Error code | Message  | Description                                           |
+|------------|----------|-------------------------------------------------------|
+|No error code.  |HTTP Response Not OK|This can be caused when an incorrect phone number or billing method are entered, or if the number to purchase has already been purchased.|
 
 #### `list_account_telephone_numbers (limit, page, pattern)`<a name=listnumbers></a>
 
@@ -411,8 +447,10 @@ The `listAccountTelephoneNumbers` method is used to retrieve a list of all of th
 
 #####Usage
 
+Add the following lines to your file:
+
+	#List Account Telephone Numbers
 	response = tnc.list_account_telephone_numbers(limit:nil, page:nil, pattern:nil)
-	put response
 	
 The method takes the following parameters:
 
@@ -420,14 +458,14 @@ The method takes the following parameters:
 |-----------|----------|-----------|-----------------------------------------------|
 | `limit`     | False    | integer| Controls the number of items returned. The maximum number of phone numbers is 200. If neither a number nor `nil` are passed, a default of ten numbers are returned.                      
 | `page`      | False  |integer  | Sets which page of the results is returned.` Next` and `Prev` URLs provided at the bottom of the response provide navigation pointers. If `nil` is passed, all pages are returned.   |
-| pattern   | False | string  | The phone number on which to search. Partial number search is supported; for example, if `206` is passed the response returns all phone numbers which include `206`. If neither a number nor `nil` are passed, all numbers associated with the account are returned.  |
+| `pattern`   | False | string  | The phone number on which to search. Partial number search is supported; for example, if `206` is passed the response returns all phone numbers which include `206`. If neither a number nor `nil` are passed, all numbers associated with the account are returned.  |
 
 ##### Example Usage
 
 For this example, the `limit` is `1`, the `page` is `nil`, and the `pattern` includes `206`.
 	
+	#List Account Telephone Numbers
 	response = tnc.list_account_telephone_numbers(limit:1, page:nil, pattern:206)
-	put response
 
 #####Example response
 
@@ -456,6 +494,9 @@ Based on the passed parameters, the number purchased using the [purchase](#purhc
     	"next": "/v1/tns/?pattern=206&limit=1&page=2"
   		}
 	}   
+	
+>**Note:** If no results are found based on the passed parameters, `{}` is returned as a response.
+>
 #####Response field descriptions
 
 The following information is returned in the response:
@@ -467,14 +508,24 @@ Parameter | Description                                             |
 ||	<ul><ul><li> `billing_method`- The billing method assigned to the phone number when the number was purchased. This will be either `METERED` or `VPRI`.</ul>|
 | |<ul><ul><li>`routes`- Displays the primary `[0]` and failover `[1]` routes for the phone number: <ul><li>`type` — Indicates the type of route: `HOST`, `PSTN`, or `URI`. If no route is assigned, `SIP-REG` is the default name assigned to the route.</ul></li> <ul><li>`name` — Name of the route. If no `name` was given to the route, `sip-reg` is the assigned default name.</ul></li> **Note:** Routes are created using the [createNewRoute](#createroute) method and existing routes can be viewed using the [mlist](#listroutes) method.|
 
+#####Error response
+
+The following error can be returned:
+
+| Error code | Message  | Description                                           |
+|------------|----------|-------------------------------------------------------|
+|No error code|HTTP Response Not OK|Typically this occurs when a `limit` does not fall within the allowed number range, such as greater than `200` or a negative number; or if `0` or a negative number are passed for the `page`. |
+
 #### `telephone_number_details (number)`<a name=phonedetails></a>
 
 The `telephone_number_details` method is used to retrieve the billing method, primary route, and failover route for the specified telephone number. 
 
 #####Usage
 
+Add the following lines to your file:
+
+	#Telephone Number Details
 	response = tnc.telephone_number_details('number')
-	put response
 
 The method takes the following parameter:
 
@@ -486,8 +537,8 @@ The method takes the following parameter:
 
 In the following example, the details for the number purchased using the [purchase](#purchaseno) method is passed:
 
+	#Telephone Number Details
 	response = tnc.telephone_number_details('12066417744')
-	put response
 
 #####Example response
 
@@ -522,7 +573,7 @@ An error response can return the following:
 
 | Error code | Message  | Description                                           |
 |------------|----------|-------------------------------------------------------|
-|No error code.  |HTTP Response Not OK|This can be caused when an incorrect phone number is entered.|
+|No error code.  |HTTP Response Not OK|This can be caused when an incorrect phone number is entered, or a number not owned by you is entered.|
 
 #### `update(number, routes)`<a name=updateroute></a>
 
@@ -532,9 +583,11 @@ The `update` method is used to update both the primary and failover route for a 
 
 #####Usage
 
+Add the following lines to your file:
+
+	#Update Telephone Number Routes
 	rtes = [name: "primary route name", name: "failover route name"]
 	response = tnc.update(number='telephoneNumbe', routes=rtes)
-	put response
 
 >**Important:** `rtes` is a variable that can be assigned any name of you choose, and of any length; however, you must use those names consistently within the method.
 
@@ -549,18 +602,26 @@ The method takes the following parameters:
 
 The following example updates the routes for the telephone number purchased using the [purchase](#purchaseno) method:
 	
+	#Update Telephone Number Routes
 	rtes = [{name: "HOSTroute1"}, {name: "URIroute1"}]
 	response = tnc.update(number='12066417744', routes=rtes)
-	put response
 
 #####Example response
 
 An empty string (`""`) is returned for a successful update. To view the route changes on the phone number, run the 
 [`listAccountTelephoneNumbers()`](#listnumbers) or [`telephoneNumberDetails()`](#phonedetails) methods.
 
+#####Error response
+
+The following errors can be returned:
+
+| Error code | Message  | Description                                           |
+|------------|----------|-------------------------------------------------------|
+|No error code|HTTP Response Not OK|Typically this occurs when a `number` is incorrect, or an incorrect `route name` is passed. |
+
 ### InboundRoutesController<a name=inboundco></a>
 
-The Inbound Routes Controller contains the methods required to view all of your existing inbound routes and to create new inbound routes.Methods must be added to a Ruby file and that file run from the **flowroute-numbers-ruby** directory in a terminal window. For example, you can create a **routes.rb** file that must contain the following information:
+The Inbound Routes Controller contains the methods required to view all of your existing inbound routes and to create new inbound routes. Methods must be added to a Ruby file and that file run from the **flowroute-numbers-ruby** directory in a terminal window. The following shows an example **routes.rb** file containing all of the Controller's methods:
 
 	require '/Users/jdoe/Documents/SDKs/flowroute-numbers-ruby/lib/flowroute_numbers/'
 	require 'rubygems'
@@ -572,13 +633,13 @@ The Inbound Routes Controller contains the methods required to view all of your 
 	
 	#List Routes
 	response = irc.list(limit:nil, page:nil)
-	put response
 	
 	#Create a New Route
-	response = irc.create_new_route(route_name='route_name',type='route_type',value='value') 
-	put response   
+	response = irc.create_new_route(route_name='route_name',type='route_type',value='value')
+	 
+	puts response   
 
-Add the following InboundRoutesController methods after `irc = FlowrouteNumbers::InboundRoutesController.new()`.If you do not want to execute a specific method, comment those lines out with `#`.
+Add the following InboundRoutesController methods after `irc = FlowrouteNumbers::InboundRoutesController.new()`, but before `puts response`. If you do not want to execute a specific method, comment those lines out with `#`.
 
 *	[`list`](#listroutes)
 * 	[`createNewRoute`](#createroute)
@@ -589,8 +650,10 @@ The list method is used to return all of the existing inbound routes from your F
 
 #####Usage
  
+Add the following lines to your file:
+
+		#List Routes
 		response = irc.list(limit:nil, page:nil)
-		put response
 
 The method takes the following parameters:
 
@@ -640,14 +703,25 @@ The following information is returned in the response:
 |-----------|--------------------------------------------------------------------------------|
 | `[routeName]` |  The name of the route assigned using the `createNewRoute` method. It is composed of:<ul> <li>`type`  The type of route created using the `createNewRoute` method. Will be `HOST`, `PSTN`, or `URI`. If no route type was assigned, `SIP-REG` is used as the default. <li>`value` Value of the route, assigned to the route `type` using the `createNewRoute` method.</ul</li>|
 
+#####Error response
+
+The following error can be returned:
+
+| Error code | Message  | Description                                           |
+|------------|----------|-------------------------------------------------------|
+|No error code|HTTP Response Not OK|Typically this occurs when a `limit` does not fall within the allowed number range, such as greater than `200` or a negative number; or if `0` or a negative number are passed for the `page`. |
+
 #### `create_new_route(name, type, value)`<a name=createroute></a>
 
 The `create_new_route `method is used to create a new inbound route.
 
 #####Usage
 
+Add the following lines to your file:
+
+	#Create a New Route
 	response = irc.create_new_route(route_name='route_name',type='route_type',value='value') 
-	put response   
+
 
 The method takes the following parameters:
 
@@ -658,21 +732,19 @@ The method takes the following parameters:
 | `value`     | True    |string |  Value of the route, dependent on the `type`: <ul><li>If `HOST`, the value must be an IP address or URL with an optional port number—for example, an IP address could be `24.239.23.40:5060` or a URL could be `myphone.com`. If no port is specified, the server will attempt to use DNS SRV records. <li>If `PSTN`, the value must be formatted as a valid E.164, 11-digit formatted North American phone number—for example,`12065551212 `. You cannot use the same number as the number for which the route is created. <li>If `URI`, the value must be formatted as  `protocol:user@domain[:port][;transport=<tcp/udp>`—for example, `sip:alice@seattle.com`,  `sip: 12065551212@215.122.69.152:5060;transport=tcp`, or `sips:securecall@securedserver.com`. You cannot use the same number as the number for which the route is created.</li></ul>              |
 ##### Example Usage
 
-In the following example, routes are created for `PSTN`, `HOST`, and `URI`:
+In the following example, three routes are created, one each for the `PSTN`, `HOST`, and `URI` types:
 
+	#Create a New Route
 	response = irc.create_new_route(route_name='MyPSTN',type='PSTN',value='12065551212')
-	put response
 	response = irc.create_new_route(route_name='MyHost',type='HOST',value='24.239.23.40:5060')
-	put response
 	response = irc.create_new_route(route_name='MyURI',type='URI',value='sip:12065551212@215.122.69.152:5060')
-	put response
 
 #####Example response
 
 An empty string (`""`) is returned for each successfully created route; no other code or message is returned. An error encountered for a specific `irc.create_new_route()` line will not prevent the other routes from being created.
 
-####Error response
-The following errors can be returned:
+#####Error response
+The following error can be returned:
 
 | Error code | Message  | Description                                           |
 |------------|----------|-------------------------------------------------------|
