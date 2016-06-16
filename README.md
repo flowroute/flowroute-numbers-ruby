@@ -19,7 +19,7 @@ The following is required before you can deploy the SDK.
 
 You will need your Flowroute API credentials (Access Key and Secret Key). These can be found on the **Preferences > API Control** page of the [Flowroute](https://manage.flowroute.com/accounts/preferences/api/) portal. If you do not have API credentials, contact <mailto:support@flowroute.com>.
 
-### A code text editor
+### Have a code text editor
 
 Steps in this SDK describe creating one or more script files that allow you to execute the methods. Script files can be created either using a terminal window shell or through using a code text editor. For example, *Sublime Text*. 
 
@@ -52,7 +52,7 @@ The SDK uses the UniRest Ruby library, which must be installed before you can us
 
 Importing the SDK in order to execute Controller methods requires that you either run commands by creating and running a script or by running commands directly through the shell. The following instructions describe importing the SDK and running the [Controllers](#controllers) by creating and running a script.
 
-1.	Using a code text editor create a new file.
+1.	Using a code text editor, create a new file.
 
 2.	At the top of the file, first add a line pointing to the library installation:
 
@@ -64,20 +64,20 @@ Importing the SDK in order to execute Controller methods requires that you eithe
 	
 	* 	`<directory path>` points to the location of the **flowroute_numbers** subdirectory of the **flowroute-numbers-ruby** installation.
 	
-3.	Add a line for RubyGems:
+3.	Add a line requiring RubyGems:
 	
 		require 'rubygems'
 		
-3.	Next, add lines which pass your credentials to the Controllers:
+4.	Next, add lines that pass your API credentials to the Controllers:
 
 		FlowrouteNumbers::Configuration.username = 'AccessKey'
 		FlowrouteNumbers::Configuration.password = 'SecretKey'   
 
-4.	Replace `AccessKey` and `SecretKey` with your own Access Key and Secret Key.
+5.	Replace `AccessKey` and `SecretKey` with your own Access Key and Secret Key.
 
-	>**Note:** You can hard code these values in **Configuration.rb**. However, if you do this you will need to rebuild the gem and install it.
+	>**Note:** You can hard code these values in **Configuration.rb**. However, if you do this you will need to rebuild the gem and install it. Regardless of where you pass your API credentials, verify that you enter them correctly in the file. An incorrectly entered Key throws an `HTTP Response Not OK` message when invoking a method.
 
-5.	Add the following lines to instantiate the three Controllers for use:
+6.	Add the following lines to instantiate the three Controllers:
 
 		pnc = FlowrouteNumbers::PurchasablePhoneNumbersController.new()
 		tnc = FlowrouteNumbers::TelephoneNumbersController.new()
@@ -85,15 +85,19 @@ Importing the SDK in order to execute Controller methods requires that you eithe
 	
 	>**Note:** The Controllers use variable names (`pnc`, `tnc`, and `irc`. If you do not want to assign variable names to the Controllers and pass your credentials to each controller, you can hard code the credentials in **Configuration.rb** and then call each controller by its full name. This SDK does not cover those steps.
 
-6.	Optionally, add a line that prints out a response when parameters are passed to a method:
+7.	Optionally, add a line that prints out a response when parameters are passed to a method, allowing you to see a response in the terminal window for invoked method:
 
 		puts response
 
-	>**Important:** Throughout this SDK, `response` is used in examples. `response` is a variable name that can be changed to a name of your own choosing. It can support an unlimited number of characters. If you choose to rename `response`, make sure that any method that references that variable name is also changed to use the new name. For example, you might have the following:
+	>**Important:** Throughout this SDK, `response` is used in method examples. `response` is a variable name that can be changed to a name of your own choosing. It can support an unlimited number of characters. If you choose to rename `response`, make sure that any method that references that variable name is also changed to use the new name. In the following example, `response` is changed to `blob` wherever `response` is used:
 >
->`blob = pnc.list_available_np_as(limit:3)`
->
->`puts blob` 
+>`#List NPA and NXX`<br>
+>`blob = pnc.list_available_np_as(limit:nil)`<br>
+>`puts (blob) 
+
+8.	Save the Ruby file in your top-level **flowroute-numbers-python** directory with a .rb extension. For example, *mycontrollers.rb*.
+
+9.	Add Controller methods as needed. See [Controllers](#controllers).
 
 The following shows an example of a single Ruby file that instantiates all Controllers:
 
@@ -115,9 +119,9 @@ You can create your own Ruby file by any of the following methods:
  
  2.	Create a unique file for each Controller, adding only those lines relevant to that Controller and related methods, and then commenting out the lines for each method you're not using. This procedure creates three unique Ruby files.
  
- 3.	Create a unique file for each method. Each file will then contain the lines instantiating the relevant Controller.
+ 3.	Create a unique file for each method. Each file will then contain the lines instantiating the relevant Controller and method.
 
-This SDK describes the second option, creating three Ruby files, one for each Controller. However, regardless of which option you select, the file(s) should be saved in the **flowroute-numbers-ruby** directory. When you want to run a method, run the following on the command line in the **flowroute-numbers-ruby** directory:
+This SDK describes the second option, creating three Ruby files, one for each Controller. However, regardless of which option you select, the file(s) should be saved in the **flowroute-numbers-ruby** directory. When you want to invoke a method, run the following on the command line in the **flowroute-numbers-ruby** directory:
 
 		ruby <Controller File Name.rb>
 
@@ -135,7 +139,7 @@ The following sections describe **flowroute-numbers-ruby** Controllers:
 
 ### PurchasablePhoneNumbersController<a name=purchaseno></a>
 
-The PurchasablePhoneNumbersController contains all of the methods necessary to search through Flowroute's phone number inventory. Methods are added to a Ruby file, and then that file run from the **flowroute-numbers-ruby** directory in a terminal window. The following shows an example **purchase.rb** file containing all of the Controller's methods:
+The PurchasablePhoneNumbersController contains all of the methods necessary to search through Flowroute's phone number inventory. The following shows an example **purchase.rb** file that invokes only the PurchasablePhoneNumbersController methods:
 
 	require '/Users/jdoe/Documents/SDKs/flowroute-numbers-ruby/lib/flowroute_numbers/'
 	require 'rubygems'
@@ -156,7 +160,7 @@ The PurchasablePhoneNumbersController contains all of the methods necessary to s
 	
 	puts response
 
-Add any of the following methods after `pnc = FlowrouteNumbers::PurchasablePhoneNumbersController.new()`, but before `puts response`. If you do not want to execute a specific method, comment those lines out with `#`
+When creating your own Ruby file, add each method after `pnc = FlowrouteNumbers::PurchasablePhoneNumbersController.new()`, but before `puts response`. If you do not want to invoke a specific method, comment out that method's lines with `#`. Click each link below for more information about each of the Controller's methods.
 
 *	[`listAvailableNPAs()`](#listnpa)
 
@@ -164,13 +168,17 @@ Add any of the following methods after `pnc = FlowrouteNumbers::PurchasablePhone
 
 * 	[`search()`](#searchno)
 
+Run the following from the **flowroute-numbers-ruby** directory in a terminal window to call the Controller methods:
+
+	ruby purchase.rb
+
 #### `list_available_np_as(limit)`<a name=listnpa></a>
 
-The `list_available_np_as` method allows you to retrieve a list of every NPA (area code) available in Flowroute's phone number inventory.
+The `list_available_np_as` method retrieves a list of every NPA (area code) available in Flowroute's phone number inventory.
 
 #####Usage
 
-Add the following lines to your file:
+Add the following lines to your Ruby file:
 
 	#List Available NPAs
 	response = pnc.list_available_np_as(limit:nil)
@@ -180,6 +188,8 @@ Add the following lines to your file:
 | `limit`     | False  |integer| Controls the number of items returned. The maximum number of items is 200. If no number is passed, `nil` is used by default, and a maximum of ten NPAs are returned. |
 
 ##### Example usage
+
+The following example limits the number of items to return to `3`.
 	
 	#List Available NPAs
 	response = pnc.list_available_np_as(limit:3)
@@ -210,8 +220,6 @@ Based on the request above, the following three NPAs are returned:
 
 #####Error response
 
-The following error can be returned:
-
 | Error code | Message  | Description                                           |
 |------------|----------|-------------------------------------------------------|
 |No error code|HTTP Response Not OK|Typically this occurs when a `limit` does not fall within the allowed number range, such as greater than `200` or a negative number. |
@@ -222,8 +230,8 @@ The `listAreaAndExchange` method allows you to retrieve a list of every NPANXX (
 
 #####Usage
 
-Add the following lines to your file:
-	
+Add the following lines to your Ruby file:
+
 	#List NPA and NXX
 	response = pnc.list_area_and_exchange(limit:nil, npa:nil, page:nil)
 	
@@ -231,13 +239,13 @@ The method takes the following parameters:
 
 | Parameter | Required |Type| Description                                                         |
 |-----------|----------|--------------|-------------------------------------------------|
-| `limit`     | False    | integer| Controls the number of items returned. The maximum number of items is 200. If neither a number nor `nil` are passed, a default of ten NPANXX combinations are returned.                 |
+| `limit`     | False    | integer| Controls the number of items returned. The maximum number of items is `200`. If neither a number nor `nil` are passed, a default of ten NPANXX combinations are returned.                 |
 | `npa`       | False  | integer| Three-digit area code. Limits results to the specified NPA. If `null` is passed, all NPAs are returned. Partial number search is also supported. For example, passing `20` returns all NPA and NXX results that include `20`.|
 | `page`      | False  |integer  | Sets which page of the results is returned.` Next` and `Prev` URLs provided at the bottom of the response provide navigation pointers. The `page` value overrides the value set for the `limit`. For example, if `nil` is set for both parameters, all pages are returned instead of just `10`.   |
 
 #####Example usage
 
-In the following, a request is made to limit the results to `2`, the NPA to `203` and to display page `3`:
+In the following, a request is made to limit the results to `2`, the NPA to `203` and to display `page` `3`:
 
 	#List NPA and NXX
 	response = pnc.list_area_and_exchange(limit:2, npa:203, page:3)
@@ -267,8 +275,6 @@ Based on the example usage above, the following two NPANXX combinations are retu
 
 #####Error response
 
-The following error can be returned:
-
 | Error code | Message  | Description                                           |
 |------------|----------|-------------------------------------------------------|
 |No error code|HTTP Response Not OK|Typically this occurs when a `limit` does not fall within the allowed number range, such as greater than `200` or a negative number; or if `0` or a negative number are passed for the `page`. |
@@ -279,7 +285,7 @@ The search method is the most robust option for searching through Flowroute's pu
 
 #####Usage
 
-Add the following lines to your file:
+Add the following lines to your Ruby file:
 
 	#Search
 	response = pnc.search(limit:nil, npa:nil, nxx:nil, page:nil, ratecenter:"nil", state:"nil", tn:nil)
@@ -298,12 +304,12 @@ The method takes the following parameters:
 
 ##### Example Usage
 
-In the following example, a search request sets the `limit` to `3`, `206` for the `npa`, `641` for the `nxx`, `2` for the `page`, `SEATTLE` for the `ratecenter`, `WA` for the `state`, and `nil` for the `tn`.
+In the following example, a search request sets the `limit` to `3`, the `npa` to `206`, the `nxx` to `641`, to `display` page `2`, the `ratecenter` to `"SEATTLE"`, the `state` to `"WA"`, and the `tn` to `nil`.
 
 	#Search
 	response = pnc.search(limit:3, npa:206, nxx:641, page:2, ratecenter:"SEATTLE", state:"WA", tn:nil)
 	
-#####Example response
+##### Example response
 
 Based on the passed search parameters, the following is returned:
 
@@ -348,7 +354,7 @@ Based on the passed search parameters, the following is returned:
 
 >**Note:** If no results are found based on the passed parameters, `{}` is returned as a response.
 
-#####Response field descriptions	
+##### Response field descriptions	
 
 The following information is returned in the response:
 
@@ -364,15 +370,13 @@ Parameter | Description                                             |
 
 #####Error response
 
-The following error can be returned:
-
 | Error code | Message  | Description                                           |
 |------------|----------|-------------------------------------------------------|
 |No error code|HTTP Response Not OK|Typically this occurs when a passed value does not fall within the range of allowed values. For example, this might be a `limit` that does not fall within the `1` to `200` range. |
 
 ### TelephoneNumbersController<a name=telephoneno></a>
 
-The TelephoneNumbersController contains all of the methods necessary to purchase and manage a Flowroute number. Methods are added to a Ruby file, and then that file run from the **flowroute-numbers-ruby** directory in a terminal window. The following shows an example file, **telephone.rb**, containing all the Controller's methods.
+The TelephoneNumbersController contains all of the methods necessary to purchase and manage a Flowroute number. The following shows a sample file, **phonenumbers.rb** file that invokes only the TelephoneNumbersController methods:
 
 	require '/Users/jdoe/Documents/SDKs/flowroute-numbers-ruby/lib/flowroute_numbers/'
 	require 'rubygems'
@@ -398,7 +402,7 @@ The TelephoneNumbersController contains all of the methods necessary to purchase
 	puts response
 	
 
-Add any of the following TelephoneNumbersController methods after `tnc = FlowrouteNumbers::TelephoneNumbersController.new()`, but before `puts response`. If you do not want to execute a specific method, comment those lines out with `#`
+Add any of the following TelephoneNumbersController methods after `tnc = FlowrouteNumbers::TelephoneNumbersController.new()`, but before `puts response`. If you do not want to invoke a specific method, comment out that method's lines with `#`.  Click each link to see more information about that method.
 
 *	[`purchase`](#purchaseno)
 *	[`listAccountTelephoneNumbers`](#listnumbers)
@@ -411,7 +415,7 @@ The purchase method is used to purchase a telephone number from Flowroute's inve
 
 #####Usage
 
-Add the following lines to your file:
+Add the following lines to your Ruby file:
 
 	#Purchase a Telephone Number
 	response = tnc.purchase(billing="billing method", number="phone number")
@@ -424,7 +428,7 @@ The method takes the following parameters:
 | `number = phone number` | True    | string | The `phone number` to purchase, using an E.164 *`1NPANXXXXXX`* format.                |
 ##### Example Usage
 
-In the following method, the billing method is VPRI, and the phone number to purchase is one retrieved from the [search](#searchno) method.
+In the following method, the billing method is `VPRI`, and the phone number to purchase is one retrieved from the [search](#searchno) method.
 
 	#Purchase a Telephone Number
 	response = tnc.purchase(billing="VPRI", number="12066417744")
@@ -434,8 +438,6 @@ In the following method, the billing method is VPRI, and the phone number to pur
 A successful purchase returns an empty line.
 
 #####Error response
-
-An error response can return the following:
 
 | Error code | Message  | Description                                           |
 |------------|----------|-------------------------------------------------------|
@@ -510,8 +512,6 @@ Parameter | Description                                             |
 
 #####Error response
 
-The following error can be returned:
-
 | Error code | Message  | Description                                           |
 |------------|----------|-------------------------------------------------------|
 |No error code|HTTP Response Not OK|Typically this occurs when a `limit` does not fall within the allowed number range, such as greater than `200` or a negative number; or if `0` or a negative number are passed for the `page`. |
@@ -520,9 +520,9 @@ The following error can be returned:
 
 The `telephone_number_details` method is used to retrieve the billing method, primary route, and failover route for the specified telephone number. 
 
-#####Usage
+##### Usage
 
-Add the following lines to your file:
+Add the following lines to your Ruby file:
 
 	#Telephone Number Details
 	response = tnc.telephone_number_details('number')
@@ -535,12 +535,12 @@ The method takes the following parameter:
 
 ##### Example Usage
 
-In the following example, the details for the number purchased using the [purchase](#purchaseno) method is passed:
+In the following example, the details for the number purchased using the [purchase](#purchaseno) method are requested:
 
 	#Telephone Number Details
 	response = tnc.telephone_number_details('12066417744')
 
-#####Example response
+##### Example response
 
 The response returns the following phone number details:
 
@@ -558,7 +558,7 @@ The response returns the following phone number details:
  		 ]
 	}
 
-#####Response field descriptions	
+##### Response field descriptions	
  
 The following information is returned in the response:
 
@@ -567,9 +567,7 @@ Parameter | Description                                             |
 |`billing_method`| The billing method assigned to the phone number when the number was purchased. This will be either `METERED` or `VPRI`.|
 |`routes` |Displays the primary and failover routes for the phone number. The first route group displays information about the primary route, the second about the failover route:<br> <ul><li>`type` — Indicates the type of route: `HOST`, `PSTN`, or `URI`. If no route is assigned, `SIP-REG` is the default name assigned to the route.</li> <li>`name` — Name of the route. If no `name` was given to the route, `sip-reg` is the default name.</ul></li>**Note:** Routes are created using the [createNewRoute](#createroute) method and can be assigned using the `update` method.|
 
-#####Error response
-
-An error response can return the following:
+##### Error response
 
 | Error code | Message  | Description                                           |
 |------------|----------|-------------------------------------------------------|
@@ -581,9 +579,9 @@ The `update` method is used to update both the primary and failover route for a 
 
 >**Note:** In order to apply an existing route to a number, the route must first be created using the [createNewRoute](#createRoute) method. To view a list of your existing routes, use the [`list`](#listroutes) method.
 
-#####Usage
+##### Usage
 
-Add the following lines to your file:
+Add the following lines to your Ruby file:
 
 	#Update Telephone Number Routes
 	rtes = [name: "primary route name", name: "failover route name"]
@@ -613,8 +611,6 @@ An empty string (`""`) is returned for a successful update. To view the route ch
 
 #####Error response
 
-The following errors can be returned:
-
 | Error code | Message  | Description                                           |
 |------------|----------|-------------------------------------------------------|
 |No error code|HTTP Response Not OK|Typically this occurs when a `number` is incorrect, or an incorrect `route name` is passed. |
@@ -639,7 +635,7 @@ The Inbound Routes Controller contains the methods required to view all of your 
 	 
 	puts response   
 
-Add the following InboundRoutesController methods after `irc = FlowrouteNumbers::InboundRoutesController.new()`, but before `puts response`. If you do not want to execute a specific method, comment those lines out with `#`.
+Add the following InboundRoutesController methods after `irc = FlowrouteNumbers::InboundRoutesController.new()`, but before `puts response`. If you do not want to invoke a specific method, comment out that method's lines with `#`.  Click each link to see more information about that method.
 
 *	[`list`](#listroutes)
 * 	[`createNewRoute`](#createroute)
@@ -650,7 +646,7 @@ The list method is used to return all of the existing inbound routes from your F
 
 #####Usage
  
-Add the following lines to your file:
+Add the following lines to your Ruby file:
 
 		#List Routes
 		response = irc.list(limit:nil, page:nil)
@@ -664,7 +660,7 @@ The method takes the following parameters:
 
 ##### Example Usage
 
-In the following example, a limit of `10` routes is to be returned, and only page `1` displayed:
+In the following example, a `limit` of `10` routes is to be returned, and only `page` `1` displayed:
 
 	response = irc.list(limit:10, page:1)
 	put response
@@ -701,11 +697,9 @@ The following information is returned in the response:
 
 | Parameter |  Description                                                     |
 |-----------|--------------------------------------------------------------------------------|
-| `[routeName]` |  The name of the route assigned using the `createNewRoute` method. It is composed of:<ul> <li>`type`  The type of route created using the `createNewRoute` method. Will be `HOST`, `PSTN`, or `URI`. If no route type was assigned, `SIP-REG` is used as the default. <li>`value` Value of the route, assigned to the route `type` using the `createNewRoute` method.</ul</li>|
+| `[routeName]` |  The name of the route assigned using the [`createNewRoute`](#createroute) method. It is composed of:<ul> <li>`type`  The type of route created using the `createNewRoute` method. Will be `HOST`, `PSTN`, or `URI`. If no route type was assigned, `SIP-REG` is used as the default. <li>`value` Value of the route, assigned to the route `type` using the `createNewRoute` method.</ul</li>|
 
 #####Error response
-
-The following error can be returned:
 
 | Error code | Message  | Description                                           |
 |------------|----------|-------------------------------------------------------|
@@ -713,15 +707,14 @@ The following error can be returned:
 
 #### `create_new_route(name, type, value)`<a name=createroute></a>
 
-The `create_new_route `method is used to create a new inbound route.
+The `create_new_route ` method is used to create a new inbound route.
 
 #####Usage
 
-Add the following lines to your file:
+Add the following lines to your Ruby file:
 
 	#Create a New Route
 	response = irc.create_new_route(route_name='route_name',type='route_type',value='value') 
-
 
 The method takes the following parameters:
 
@@ -744,8 +737,7 @@ In the following example, three routes are created, one each for the `PSTN`, `HO
 An empty string (`""`) is returned for each successfully created route; no other code or message is returned. An error encountered for a specific `irc.create_new_route()` line will not prevent the other routes from being created.
 
 #####Error response
-The following error can be returned:
 
 | Error code | Message  | Description                                           |
 |------------|----------|-------------------------------------------------------|
-|No error code|HTTP Response Not OK|Typically this occurs when a `value` is malformed. |
+|No error code|HTTP Response Not OK|Typically this occurs when an incorrect number of digits was passed for the telephone number. The number must use E.164, 11-digit `1NPANXXXXXXXXX` format. |
