@@ -95,9 +95,11 @@ Importing the SDK in order to execute Controller methods requires that you eithe
 >`blob = pnc.list_available_np_as(limit:nil)`<br>
 >`puts (blob) 
 
-8.	Save the Ruby file in your top-level **flowroute-numbers-python** directory with a .rb extension. For example, *mycontrollers.rb*.
+8.	Save the Ruby file in your top-level **flowroute-numbers-ruby** directory with a .rb extension. For example, *mycontrollers.rb*.
 
 9.	Add Controller methods as needed. See [Controllers](#controllers).
+
+#####Example Ruby file
 
 The following shows an example of a single Ruby file that instantiates all Controllers:
 
@@ -113,7 +115,7 @@ The following shows an example of a single Ruby file that instantiates all Contr
 	
 	puts response
 
-You can create your own Ruby file by any of the following methods:
+With this in mind, you can then decide the approach you want to take towards creating a file. You can create your own Ruby file using any of the following options:
  
  1.	Create a single file that contains all of the Controllers and methods, then commenting (#) out the lines for each Controller and method you don't want to run.
  
@@ -139,6 +141,8 @@ The following sections describe **flowroute-numbers-ruby** Controllers:
 
 ### PurchasablePhoneNumbersController<a name=purchaseno></a>
 
+Location: **./flowroute-numbers-ruby/lib/flowroute_numbers/controllers**
+
 The PurchasablePhoneNumbersController contains all of the methods necessary to search through Flowroute's phone number inventory. The following shows an example **purchase.rb** file that invokes only the PurchasablePhoneNumbersController methods:
 
 	require '/Users/jdoe/Documents/SDKs/flowroute-numbers-ruby/lib/flowroute_numbers/'
@@ -160,7 +164,9 @@ The PurchasablePhoneNumbersController contains all of the methods necessary to s
 	
 	puts response
 
-When creating your own Ruby file, add each method after `pnc = FlowrouteNumbers::PurchasablePhoneNumbersController.new()`, but before `puts response`. If you do not want to invoke a specific method, comment out that method's lines with `#`. Click each link below for more information about each of the Controller's methods.
+When creating your own Ruby file, add each method after `pnc = FlowrouteNumbers::PurchasablePhoneNumbersController.new()`, but before `puts response`. If you do not want to invoke a specific method, comment out that method's lines with `#`. 
+
+The Controller contains the following methods:
 
 *	[`listAvailableNPAs()`](#listnpa)
 
@@ -376,7 +382,9 @@ Parameter | Description                                             |
 
 ### TelephoneNumbersController<a name=telephoneno></a>
 
-The TelephoneNumbersController contains all of the methods necessary to purchase and manage a Flowroute number. The following shows a sample file, **phonenumbers.rb** file that invokes only the TelephoneNumbersController methods:
+Location: **./flowroute-numbers-ruby/lib/flowroute_numbers/controllers**
+
+The TelephoneNumbersController contains all of the methods necessary to purchase and manage a Flowroute number. The following shows a sample file, **phonenumbers.rb**, that invokes only the TelephoneNumbersController methods:
 
 	require '/Users/jdoe/Documents/SDKs/flowroute-numbers-ruby/lib/flowroute_numbers/'
 	require 'rubygems'
@@ -402,7 +410,9 @@ The TelephoneNumbersController contains all of the methods necessary to purchase
 	puts response
 	
 
-Add any of the following TelephoneNumbersController methods after `tnc = FlowrouteNumbers::TelephoneNumbersController.new()`, but before `puts response`. If you do not want to invoke a specific method, comment out that method's lines with `#`.  Click each link to see more information about that method.
+Add any of the following TelephoneNumbersController methods after `tnc = FlowrouteNumbers::TelephoneNumbersController.new()`, but before `puts response`. If you do not want to invoke a specific method, comment out that method's lines with `#`.  
+
+The Controller contains the following methods:
 
 *	[`purchase`](#purchaseno)
 *	[`listAccountTelephoneNumbers`](#listnumbers)
@@ -424,8 +434,9 @@ The method takes the following parameters:
 
 | Parameter       | Required | Type|Description                                                 |                                                          
 |-----------------|----------|--------|-------------------------------------------------------|
-| `billing = billing method`   | True     |string  | Sets the billing method applied to the purchased number. `billing method` must be one of the following: <ul><li>`METERED` — unlimited concurrent calls, each billed per-minute used.</li> <li> `VPRI` — limits the number of concurrent calls to the number of VPRI channels you have, but with unlimited usage on each channel. </li></ul>|       
-| `number = phone number` | True    | string | The `phone number` to purchase, using an E.164 *`1NPANXXXXXX`* format.                |
+| `billing method`   | True     |string  | Sets the billing method applied to the purchased number. `billing method` must be one of the following: <ul><li>`METERED` — unlimited concurrent calls, each billed per-minute used.</li> <li> `VPRI` — limits the number of concurrent calls to the number of VPRI channels you have, but with unlimited usage on each channel. </li></ul>|       
+| `phone number` | True    | string | The Flowroute telephone number to purchase, using an 11-digit E.164 format: *`1NPANXXXXXX`*.                |
+
 ##### Example Usage
 
 In the following method, the billing method is `VPRI`, and the phone number to purchase is one retrieved from the [search](#searchno) method.
@@ -433,11 +444,11 @@ In the following method, the billing method is `VPRI`, and the phone number to p
 	#Purchase a Telephone Number
 	response = tnc.purchase(billing="VPRI", number="12066417744")
 
-#####Example response
+##### Example response
 
 A successful purchase returns an empty line.
 
-#####Error response
+##### Error response
 
 | Error code | Message  | Description                                           |
 |------------|----------|-------------------------------------------------------|
@@ -447,7 +458,7 @@ A successful purchase returns an empty line.
 
 The `listAccountTelephoneNumbers` method is used to retrieve a list of all of the phone numbers on your Flowroute account.
 
-#####Usage
+##### Usage
 
 Add the following lines to your file:
 
@@ -499,7 +510,7 @@ Based on the passed parameters, the number purchased using the [purchase](#purhc
 	
 >**Note:** If no results are found based on the passed parameters, `{}` is returned as a response.
 >
-#####Response field descriptions
+##### Response field descriptions
 
 The following information is returned in the response:
 
@@ -510,7 +521,7 @@ Parameter | Description                                             |
 ||	<ul><ul><li> `billing_method`- The billing method assigned to the phone number when the number was purchased. This will be either `METERED` or `VPRI`.</ul>|
 | |<ul><ul><li>`routes`- Displays the primary `[0]` and failover `[1]` routes for the phone number: <ul><li>`type` — Indicates the type of route: `HOST`, `PSTN`, or `URI`. If no route is assigned, `SIP-REG` is the default name assigned to the route.</ul></li> <ul><li>`name` — Name of the route. If no `name` was given to the route, `sip-reg` is the assigned default name.</ul></li> **Note:** Routes are created using the [createNewRoute](#createroute) method and existing routes can be viewed using the [mlist](#listroutes) method.|
 
-#####Error response
+##### Error response
 
 | Error code | Message  | Description                                           |
 |------------|----------|-------------------------------------------------------|
@@ -585,16 +596,20 @@ Add the following lines to your Ruby file:
 
 	#Update Telephone Number Routes
 	rtes = [name: "primary route name", name: "failover route name"]
-	response = tnc.update(number='telephoneNumbe', routes=rtes)
+	response = tnc.update(number='telephoneNumber', routes=rtes)
 
->**Important:** `rtes` is a variable that can be assigned any name of you choose, and of any length; however, you must use those names consistently within the method.
+First, define the variable name that identifies the array:
 
-The method takes the following parameters:
+| Parameter       | Required | Type |Description |                                                     
+|-----------------|----------|-------|----------------------------------------------------------|
+|`rtes`|True| string| Variable name that identifies the array. This field can be of unlimited characters. In this example, `rtes` is used.|
 
-| Parameter       | Required | Type |Description                                                       |
-|-----------------|----------|-------|-----------------------------------------------------------------|
-|`name:"route name"`|True| string| Name of an existing route. The first `name` in the array will be assigned the primary route; the second `name` in the array will be assigned the secondary, or failover, route. 
-| `telephoneNumber` | True     | string |    The telephone number for which to update the route. You must use an 11-digit, E.164 number, formatted as *`1NPANXXXXXX`*.| 
+Next, define the variables that compose the array:
+
+| Parameter       | Required | Type |Description |                                                     
+|-----------------|----------|-------|----------------------------------------------------------|
+|`primary/failover route name`|True| string| Name of a current route. The first `name` in the array will be assigned the primary route; the second `name` will be assigned the secondary, or failover, route. See [`create_new_route`](#createroute) for the steps to create a route.|
+| `telephoneNumber` | True     | string |    The telephone number on which to update routes. You must use a Flowroute phone number in an 11-digit, E.164 format: *`1NPANXXXXXX`*.|  
 
 ##### Example Usage
 
@@ -617,7 +632,9 @@ An empty string (`""`) is returned for a successful update. To view the route ch
 
 ### InboundRoutesController<a name=inboundco></a>
 
-The Inbound Routes Controller contains the methods required to view all of your existing inbound routes and to create new inbound routes. Methods must be added to a Ruby file and that file run from the **flowroute-numbers-ruby** directory in a terminal window. The following shows an example **routes.rb** file containing all of the Controller's methods:
+Location: **./flowroute-numbers-ruby/lib/flowroute_numbers/controllers**
+
+The Inbound Routes Controller contains the methods required to view all of your existing inbound routes and to create new inbound routes. Methods must be added to a Ruby file and that file run from the **flowroute-numbers-ruby** directory in a terminal window. The following shows an example file,  **routes.rb**, containing all of the Controller's methods:
 
 	require '/Users/jdoe/Documents/SDKs/flowroute-numbers-ruby/lib/flowroute_numbers/'
 	require 'rubygems'
@@ -635,7 +652,9 @@ The Inbound Routes Controller contains the methods required to view all of your 
 	 
 	puts response   
 
-Add the following InboundRoutesController methods after `irc = FlowrouteNumbers::InboundRoutesController.new()`, but before `puts response`. If you do not want to invoke a specific method, comment out that method's lines with `#`.  Click each link to see more information about that method.
+Add the following InboundRoutesController methods after `irc = FlowrouteNumbers::InboundRoutesController.new()`, but before `puts response`. If you do not want to invoke a specific method, comment out that method's lines with `#`.  
+
+The Controller contains the following methods:
 
 *	[`list`](#listroutes)
 * 	[`createNewRoute`](#createroute)
@@ -662,8 +681,9 @@ The method takes the following parameters:
 
 In the following example, a `limit` of `10` routes is to be returned, and only `page` `1` displayed:
 
+	#List Routes
 	response = irc.list(limit:10, page:1)
-	put response
+
 	
 #####Example response
 
@@ -729,8 +749,14 @@ In the following example, three routes are created, one each for the `PSTN`, `HO
 
 	#Create a New Route
 	response = irc.create_new_route(route_name='MyPSTN',type='PSTN',value='12065551212')
+	puts response  
 	response = irc.create_new_route(route_name='MyHost',type='HOST',value='24.239.23.40:5060')
+	puts response  
 	response = irc.create_new_route(route_name='MyURI',type='URI',value='sip:12065551212@215.122.69.152:5060')
+	puts response  
+
+
+>**Note**: In the example above, `puts response` is added after each line. This returns a success or error response for each line.
 
 #####Example response
 
