@@ -157,7 +157,7 @@ The PurchasablePhoneNumbersController contains all of the methods necessary to s
 	response = pnc.list_available_np_as(limit:nil)
 		
 	#List NPA and NXX
-	pnc.list_area_and_exchange(limit:nil, npa:nil, page:nil)
+	response = pnc.list_area_and_exchange(limit:nil, npa:nil, page:nil)
 		
 	#Search
 	response = pnc.search(limit:nil, npa:nil, nxx:nil, page:nil, ratecenter:"nil", state:"nil", tn:nil)
