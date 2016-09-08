@@ -325,7 +325,6 @@ Based on the passed search parameters, the following is returned:
       "initial_cost": "1.00",
       "monthly_cost": "1.25",
       "billing_methods": [
-        "VPRI",
         "METERED"
       ],
       "ratecenter": "SEATTLE",
@@ -335,7 +334,6 @@ Based on the passed search parameters, the following is returned:
       "initial_cost": "1.00",
       "monthly_cost": "1.25",
       "billing_methods": [
-        "VPRI",
         "METERED"
       ],
       "ratecenter": "SEATTLE",
@@ -345,7 +343,6 @@ Based on the passed search parameters, the following is returned:
       "initial_cost": "1.00",
       "monthly_cost": "1.25",
       "billing_methods": [
-        "VPRI",
         "METERED"
       ],
       "ratecenter": "SEATTLE",
@@ -370,7 +367,7 @@ Parameter | Description                                             |
 ||	*`telephone number`*- The retrieved telephone number object, which is composed of:|
 ||	<ul><ul><li> `initial_cost`- The one-time fixed cost for that telephone number. The default value is USD `1.00`.</ul>|
 | | <ul><ul><li>`monthly_cost`- The recurring monthly cost to maintain that telephone number. The default value is USD `1.25`.</ul>|
-| |<ul><ul><li>`billing_methods`- Displays the billing methods available for the telephone number: <ul><li>`[0] VPRI`, or</ul></li> <ul><li>`[1] METERED` </ul></li>|
+| |<ul><ul><li>`billing_methods`- Displays the billing methods available for the telephone number. The only billing method is `[1] METERED`.|
 ||	`ratecenter`- The ratecenter associated with the NPANXX.|
 ||	`state`- The US state or Canadian province or territory in which the NPANXX is located.</ol>|
 
@@ -434,15 +431,15 @@ The method takes the following parameters:
 
 | Parameter       | Required | Type|Description                                                 |                                                          
 |-----------------|----------|--------|-------------------------------------------------------|
-| `billing method`   | True     |string  | Sets the billing method applied to the purchased number. `billing method` must be one of the following: <ul><li>`METERED` — unlimited concurrent calls, each billed per-minute used.</li> <li> `VPRI` — limits the number of concurrent calls to the number of VPRI channels you have, but with unlimited usage on each channel. </li></ul>|       
+| `billing method`   | True     |string  | Sets the billing method applied to the purchased number. There is only one `billing method`, `METERED`, which are unlimited concurrent calls, each billed per-minute used.|       
 | `phone number` | True    | string | The Flowroute telephone number to purchase, using an 11-digit E.164 format: *`1NPANXXXXXX`*.                |
 
 ##### Example Usage
 
-In the following method, the billing method is `VPRI`, and the phone number to purchase is one retrieved from the [search](#searchno) method.
+In the following method, the billing method is `METERED`, and the phone number to purchase is one retrieved from the [search](#searchno) method.
 
 	#Purchase a Telephone Number
-	response = tnc.purchase(billing="VPRI", number="12066417744")
+	response = tnc.purchase(billing="METERED", number="12066417744")
 
 ##### Example response
 
@@ -487,7 +484,7 @@ Based on the passed parameters, the number purchased using the [purchase](#purhc
 	{
   		"tns": {
    	 	"12066417848": {
-   	   	"billing_method": "VPRI",
+   	   	"billing_method": "METERED",
    	   	"routes": [
    	   	  {
    	   	    "type": "HOST",
@@ -518,7 +515,7 @@ Parameter | Description                                             |
 |--------|-------------------------------------------------------|
 | `tns`  | Object composed of a `telephone number`, `billing_method`, and `routes`.|                           
 ||	*`telephone number`*- The retrieved telephone number object, which is composed of:|
-||	<ul><ul><li> `billing_method`- The billing method assigned to the phone number when the number was purchased. This will be either `METERED` or `VPRI`.</ul>|
+||	<ul><ul><li> `billing_method`- Returns `METERED`.</ul>|
 | |<ul><ul><li>`routes`- Displays the primary `[0]` and failover `[1]` routes for the phone number: <ul><li>`type` — Indicates the type of route: `HOST`, `PSTN`, or `URI`. If no route is assigned, `SIP-REG` is the default name assigned to the route.</ul></li> <ul><li>`name` — Name of the route. If no `name` was given to the route, `sip-reg` is the assigned default name.</ul></li> **Note:** Routes are created using the [createNewRoute](#createroute) method and existing routes can be viewed using the [mlist](#listroutes) method.|
 
 ##### Error response
@@ -556,7 +553,7 @@ In the following example, the details for the number purchased using the [purcha
 The response returns the following phone number details:
 
 	{
- 	 "billing_method": "VPRI",
+ 	 "billing_method": "METERED",
   	"routes": [
   	  {
   	    "type": "SIP-REG",
@@ -575,7 +572,7 @@ The following information is returned in the response:
 
 Parameter | Description                                             |
 |--------|-------------------------------------------------------|                       
-|`billing_method`| The billing method assigned to the phone number when the number was purchased. This will be either `METERED` or `VPRI`.|
+|`billing_method`| Returns `METERED` as the billing method assigned to the phone number when the number was purchased.|
 |`routes` |Displays the primary and failover routes for the phone number. The first route group displays information about the primary route, the second about the failover route:<br> <ul><li>`type` — Indicates the type of route: `HOST`, `PSTN`, or `URI`. If no route is assigned, `SIP-REG` is the default name assigned to the route.</li> <li>`name` — Name of the route. If no `name` was given to the route, `sip-reg` is the default name.</ul></li>**Note:** Routes are created using the [createNewRoute](#createroute) method and can be assigned using the `update` method.|
 
 ##### Error response
