@@ -43,8 +43,8 @@ The SDK uses the UniRest Ruby library, which must be installed before you can us
 
 5.	Run the following:
 
-		gem build flowroute_messaging.gemspec
-		gem install flowroute_messaging-1.0.gem
+		gem build flowroute_numbers.gemspec
+		gem install flowroute_numbers-1.0.gem
 
 6.	Import the SDK.
 
