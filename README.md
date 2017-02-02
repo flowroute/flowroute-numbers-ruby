@@ -107,7 +107,7 @@ The following shows an example of a single Ruby file that instantiates all Contr
 
 With this in mind, you can then decide the approach you want to take towards creating a file. You can create your own Ruby file using any of the following options:
  
- 1.	Create a single file that contains all of the Controllers and methods, then commenting (#) out the lines for each Controller and method you don't want to run.
+ 1.	Create a single file that contains all of the Controllers and methods, then commenting (#) out the lines for each Controller and method you don't want to run. Please refer to demo_numbers.rb for your example file.
  
  2.	Create a unique file for each Controller, adding only those lines relevant to that Controller and related methods, and then commenting out the lines for each method you're not using. This procedure creates three unique Ruby files.
  
