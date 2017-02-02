@@ -54,30 +54,20 @@ Importing the SDK in order to execute Controller methods requires that you eithe
 
 1.	Using a code text editor, create a new file.
 
-2.	At the top of the file, first add a line pointing to the library installation:
-
-		require /users/<user>/<directory path>/flowroute-numbers-ruby/lib/flowroute_numbers/
+2.	At the top of the file, specify your required libraries and gems:
+	require 'flowroute_numbers'
+	require 'rubygems'
 		
-	where:
-	
-	*	`<user>` is the user name of the user in whose directory the library is installed.
-	
-	* 	`<directory path>` points to the location of the **flowroute_numbers** subdirectory of the **flowroute-numbers-ruby** installation.
-	
-3.	Add a line requiring RubyGems:
-	
-		require 'rubygems'
-		
-4.	Next, add lines that pass your API credentials to the Controllers:
+3.	Next, add lines that pass your API credentials to the Controllers:
 
 		FlowrouteNumbers::Configuration.username = 'AccessKey'
 		FlowrouteNumbers::Configuration.password = 'SecretKey'   
 
-5.	Replace `AccessKey` and `SecretKey` with your own Access Key and Secret Key.
+4.	Replace `AccessKey` and `SecretKey` with your own Access Key and Secret Key.
 
 	>**Note:** You can hard code these values in **Configuration.rb**. However, if you do this you will need to rebuild the gem and install it. Regardless of where you pass your API credentials, verify that you enter them correctly in the file. An incorrectly entered Key throws an `HTTP Response Not OK` message when invoking a method.
 
-6.	Add the following lines to instantiate the three Controllers:
+5.	Add the following lines to instantiate the three Controllers:
 
 		pnc = FlowrouteNumbers::PurchasablePhoneNumbersController.new()
 		tnc = FlowrouteNumbers::TelephoneNumbersController.new()
@@ -85,7 +75,7 @@ Importing the SDK in order to execute Controller methods requires that you eithe
 	
 	>**Note:** The Controllers use variable names (`pnc`, `tnc`, and `irc`. If you do not want to assign variable names to the Controllers and pass your credentials to each controller, you can hard code the credentials in **Configuration.rb** and then call each controller by its full name. This SDK does not cover those steps.
 
-7.	Optionally, add a line that prints out a response when parameters are passed to a method, allowing you to see a response in the terminal window for invoked method:
+6.	Optionally, add a line that prints out a response when parameters are passed to a method, allowing you to see a response in the terminal window for invoked method:
 
 		puts response
 
@@ -95,15 +85,15 @@ Importing the SDK in order to execute Controller methods requires that you eithe
 >`blob = pnc.list_available_np_as(limit:nil)`<br>
 >`puts (blob) 
 
-8.	Save the Ruby file in your top-level **flowroute-numbers-ruby** directory with a .rb extension. For example, *mycontrollers.rb*.
+7.	Save the Ruby file on your top-level **flowroute-numbers-ruby** directory with a .rb extension. For example, *mycontrollers.rb*.
 
-9.	Add Controller methods as needed. See [Controllers](#controllers).
+8.	Add Controller methods as needed. See [Controllers](#controllers).
 
 #####Example Ruby file
 
 The following shows an example of a single Ruby file that instantiates all Controllers:
 
-	require '/Users/jdoe/Documents/SDKs/flowroute-numbers-ruby/lib/flowroute_numbers/'
+	require 'flowroute_numbers'
 	require 'rubygems'
 	
 	FlowrouteNumbers::Configuration.username = 'AccessKey'
