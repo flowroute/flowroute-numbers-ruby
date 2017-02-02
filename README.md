@@ -55,8 +55,8 @@ Importing the SDK in order to execute Controller methods requires that you eithe
 1.	Using a code text editor, create a new file.
 
 2.	At the top of the file, specify your required libraries and gems:
-	require 'flowroute_numbers'
-	require 'rubygems'
+		require 'flowroute_numbers'
+		require 'rubygems'
 		
 3.	Next, add lines that pass your API credentials to the Controllers:
 
