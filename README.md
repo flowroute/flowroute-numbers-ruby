@@ -1,4 +1,4 @@
-# flowroute-numbers-ruby
+# Numbers Ruby SDK
 
 **flowroute-numbers-ruby** is a Ruby API Wrapper that provides methods for interacting with **v1** (version 1) of the [Flowroute](https://www.flowroute.com) API. These methods can be used to accomplish the following:
 
@@ -9,8 +9,7 @@
 * Update the primary and failover route on a phone number
 
 ### Documentation 
-The full documentation for the v1 Flowroute API is available [here](https://developer.flowroute.com/v1.0/docs).
-
+To work with the SDK, please read and follow the steps [here](http://developer.flowroute.com/libraries/ruby/#numbers).
 ##Before you begin
 
 The following is required before you can deploy the SDK.
