@@ -1,6 +1,6 @@
 # Numbers Ruby SDK
 
-**flowroute-numbers-ruby** is a Ruby API Wrapper that provides methods for interacting with [v1 (version 1)] (https://developer.flowroute.com/api/numbers/overview) of the Flowroute API. These methods can be used to accomplish the following:
+**flowroute-numbers-ruby** is a Ruby API Wrapper that provides methods for interacting with [v1](https://developer.flowroute.com/api/numbers/overview) of the Flowroute API. These methods can be used to accomplish the following:
 
 * Search for purchasable phone numbers
 * Purchase phone numbers
